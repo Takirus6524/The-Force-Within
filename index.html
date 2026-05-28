@@ -1,0 +1,3078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>THE FORCE WITHIN</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+:root {
+  --bg-primary:#0a0a0f;--bg-secondary:#12121a;--bg-tertiary:#1a1a2e;
+  --accent-blue:#00d4ff;--accent-amber:#ffaa00;--accent-purple:#9d4edd;
+  --accent-mint:#28f0c7;--accent-rose:#ff5f8f;
+  --accent-gold:#ffd166;
+  --text-primary:#e0e0ff;--text-secondary:#8a8ab5;--text-dim:#4a4a6a;
+  --success:#00ff88;--warning:#ff6b35;--danger:#ff2a6d;
+  --glass:rgba(255,255,255,0.03);--glass-border:rgba(255,255,255,0.08);
+  --panel-gradient:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(157,78,221,0.08));
+  --panel-glow:0 12px 40px rgba(0,0,0,0.28);
+}
+* {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+body {font-family:'Rajdhani',sans-serif;background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden;min-height:100vh;position:relative;background-image:radial-gradient(1200px 600px at 10% -10%,rgba(0,212,255,0.06),transparent),radial-gradient(900px 600px at 90% 110%,rgba(255,209,102,0.05),transparent)}
+.bg-stars {position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.star {position:absolute;background:white;border-radius:50%;animation:twinkle var(--duration) ease-in-out infinite;opacity:var(--opacity)}
+@keyframes twinkle {0%,100%{opacity:var(--opacity)}50%{opacity:calc(var(--opacity)*0.3)}}
+.bg-gradient {position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 20% 50%,rgba(0,212,255,0.03) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(157,78,221,0.03) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(255,170,0,0.02) 0%,transparent 50%);pointer-events:none;z-index:1}
+.bg-orb {position:fixed;z-index:1;pointer-events:none;filter:blur(28px);opacity:0.34;border-radius:999px;mix-blend-mode:screen;animation:orbFloat 16s ease-in-out infinite}
+.orb-a {width:260px;height:260px;left:-80px;top:18vh;background:radial-gradient(circle,rgba(0,212,255,0.35),rgba(0,212,255,0))}
+.orb-b {width:220px;height:220px;right:-60px;top:8vh;background:radial-gradient(circle,rgba(157,78,221,0.3),rgba(157,78,221,0))}
+.orb-c {width:280px;height:280px;right:-100px;bottom:14vh;background:radial-gradient(circle,rgba(255,209,102,0.28),rgba(255,209,102,0))}
+@keyframes orbFloat {0%,100%{transform:translateY(0) translateX(0)}50%{transform:translateY(-14px) translateX(8px)}}
+.app-container {position:relative;z-index:2;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px}
+.screen {display:none;animation:fadeIn 0.4s ease-out;padding:20px;position:relative}
+.screen.active {display:block}
+.transition-overlay {position:absolute;inset:0;pointer-events:none;z-index:150;opacity:0;transform:translateX(-120%) skewX(-12deg);background:linear-gradient(120deg,rgba(0,0,0,0),rgba(0,212,255,0.16),rgba(255,209,102,0.12),rgba(0,0,0,0));mix-blend-mode:screen}
+.app-container.cinematic .transition-overlay {animation:cinematicSweep 560ms cubic-bezier(0.2,0.7,0.25,1)}
+.screen.cinematic-in {animation:screenCinematicIn 520ms cubic-bezier(0.2,0.75,0.2,1)}
+.screen::before {content:'';position:absolute;left:0;right:0;top:0;height:2px;opacity:0.55;background:linear-gradient(90deg,transparent,var(--accent-blue),transparent)}
+#screen-dashboard::before {background:linear-gradient(90deg,transparent,var(--accent-blue),var(--accent-purple),transparent)}
+#screen-training::before {background:linear-gradient(90deg,transparent,var(--accent-mint),var(--accent-blue),transparent)}
+#screen-evening::before {background:linear-gradient(90deg,transparent,var(--accent-amber),var(--accent-rose),transparent)}
+#screen-schedule::before {background:linear-gradient(90deg,transparent,var(--accent-purple),var(--accent-blue),transparent)}
+#screen-profile::before {background:linear-gradient(90deg,transparent,var(--accent-amber),var(--accent-purple),transparent)}
+#screen-emotion-log::before {background:linear-gradient(90deg,transparent,var(--accent-mint),var(--accent-purple),transparent)}
+@keyframes fadeIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardRise {from{opacity:0;transform:translateY(8px) scale(0.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes cinematicSweep {0%{opacity:0;transform:translateX(-120%) skewX(-12deg)}35%{opacity:1}100%{opacity:0;transform:translateX(120%) skewX(-12deg)}}
+@keyframes screenCinematicIn {0%{opacity:0;transform:translateY(16px) scale(0.985);filter:blur(4px)}55%{opacity:1;transform:translateY(0) scale(1.003);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+h1,h2,h3 {font-family:'Orbitron',sans-serif;letter-spacing:2px}
+.title-glow {text-shadow:0 0 20px rgba(0,212,255,0.3),0 0 40px rgba(0,212,255,0.1)}
+.amber-glow {text-shadow:0 0 20px rgba(255,170,0,0.3),0 0 40px rgba(255,170,0,0.1)}
+.training-title {font-family:'Cinzel',serif;letter-spacing:1px;text-transform:uppercase;color:#f4f1ff;text-shadow:0 0 20px rgba(0,212,255,0.14)}
+.training-phase {position:relative;display:inline-block;padding:0 12px}
+.training-phase::before,.training-phase::after {content:'';position:absolute;top:50%;width:10px;height:1px;background:linear-gradient(90deg,transparent,var(--accent-blue));opacity:0.45}
+.training-phase::before {left:0;transform:translate(-100%,-50%)}
+.training-phase::after {right:0;transform:translate(100%,-50%) rotate(180deg)}
+.btn {display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 32px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text-primary);font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:12px;transition:all 0.3s ease;position:relative;overflow:hidden;width:100%;z-index:100;backdrop-filter:blur(10px)}
+.btn::before {content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);transition:left 0.5s}
+.btn::after {content:'';position:absolute;inset:1px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);pointer-events:none;opacity:0.5}
+.btn:hover::before,.btn:active::before {left:100%}
+.btn:hover,.btn:active {transform:translateY(-1px);box-shadow:0 10px 30px rgba(0,0,0,0.18)}
+.btn:disabled {opacity:0.5;cursor:not-allowed}
+.btn.has-icon {justify-content:flex-start;padding-left:16px;padding-right:18px}
+.btn-icon {display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:8px;border:1px solid rgba(255,255,255,0.16);background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));font-size:12px;line-height:1;box-shadow:inset 0 1px 0 rgba(255,255,255,0.15);flex:0 0 auto}
+.btn-label {display:inline-block;flex:1;text-align:left}
+.btn-primary {border-color:rgba(0,212,255,0.32);background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,212,255,0.04));box-shadow:0 0 20px rgba(0,212,255,0.1),inset 0 0 20px rgba(0,212,255,0.05)}
+.btn-primary:hover,.btn-primary:active {background:rgba(0,212,255,0.14);box-shadow:0 0 30px rgba(0,212,255,0.2),inset 0 0 30px rgba(0,212,255,0.1)}
+.btn-amber {border-color:rgba(255,170,0,0.32);background:linear-gradient(135deg,rgba(255,170,0,0.12),rgba(255,170,0,0.04));box-shadow:0 0 20px rgba(255,170,0,0.1),inset 0 0 20px rgba(255,170,0,0.05)}
+.btn-amber:hover,.btn-amber:active {background:rgba(255,170,0,0.14);box-shadow:0 0 30px rgba(255,170,0,0.2),inset 0 0 30px rgba(255,170,0,0.1)}
+.btn-secondary {border-color:rgba(157,78,221,0.32);background:linear-gradient(135deg,rgba(157,78,221,0.12),rgba(157,78,221,0.04));box-shadow:0 0 20px rgba(157,78,221,0.08),inset 0 0 20px rgba(157,78,221,0.05)}
+.btn-secondary:hover,.btn-secondary:active {background:rgba(157,78,221,0.14);box-shadow:0 0 30px rgba(157,78,221,0.16),inset 0 0 30px rgba(157,78,221,0.1)}
+.card {background:var(--panel-gradient);border:1px solid var(--glass-border);border-radius:18px;padding:20px;margin-bottom:16px;backdrop-filter:blur(14px);position:relative;overflow:hidden;box-shadow:var(--panel-glow),inset 0 1px 0 rgba(255,255,255,0.06)}
+.card::before {content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent 35%,rgba(0,212,255,0.12));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.card::after {content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-blue),transparent);opacity:0.5}
+.card:hover {transform:translateY(-2px);border-color:rgba(0,212,255,0.2);box-shadow:0 20px 50px rgba(0,0,0,0.35),0 0 0 1px rgba(0,212,255,0.12)}
+.screen.active .card {animation:cardRise 0.32s ease both}
+.screen.active .card:nth-of-type(2) {animation-delay:0.04s}
+.screen.active .card:nth-of-type(3) {animation-delay:0.08s}
+.screen.active .card:nth-of-type(4) {animation-delay:0.12s}
+.intro-screen {display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:40px 20px}
+.intro-logo {font-size:28px;font-weight:900;margin-bottom:10px;letter-spacing:6px}
+.intro-subtitle {font-size:12px;color:var(--text-secondary);letter-spacing:4px;text-transform:uppercase;margin-bottom:60px}
+.intro-user-name {font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:3px;color:var(--accent-amber);margin-bottom:18px;text-transform:uppercase}
+.intro-quote {font-size:16px;line-height:1.8;color:var(--text-secondary);max-width:320px;margin-bottom:60px;font-style:italic;position:relative}
+.intro-quote::before,.intro-quote::after {content:'"';font-size:40px;color:var(--accent-blue);opacity:0.3;position:absolute}
+.intro-quote::before {top:-20px;left:-15px}
+.intro-quote::after {bottom:-30px;right:-15px}
+.force-symbol {width:80px;height:80px;margin-bottom:40px;position:relative}
+.force-symbol svg {width:100%;height:100%;filter:drop-shadow(0 0 20px rgba(0,212,255,0.4))}
+.dashboard-header {text-align:center;padding:20px 0;margin-bottom:20px}
+.rank-badge {display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(157,78,221,0.1));border:1px solid rgba(0,212,255,0.3);border-radius:30px;font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;margin-bottom:20px}
+.rank-badge .rank-icon {font-size:18px}
+.vitality-container {display:flex;flex-direction:column;align-items:center;margin:30px 0}
+.vitality-ring {width:180px;height:180px;position:relative}
+.vitality-ring svg {transform:rotate(-90deg)}
+.vitality-ring-bg {fill:none;stroke:var(--bg-tertiary);stroke-width:8}
+.vitality-ring-fill {fill:none;stroke:var(--accent-blue);stroke-width:8;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1s ease-out,stroke 0.5s;filter:drop-shadow(0 0 10px rgba(0,212,255,0.5))}
+.vitality-center {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.vitality-value {font-family:'Orbitron',sans-serif;font-size:36px;font-weight:700;color:var(--accent-blue)}
+.vitality-label {font-size:11px;color:var(--text-secondary);letter-spacing:2px;text-transform:uppercase}
+.vitality-state {margin-top:15px;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;border-radius:20px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2)}
+.stats-grid {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.stat-item {background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015));border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:16px;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,0.16)}
+.stat-value {font-family:'Orbitron',sans-serif;font-size:24px;font-weight:700;color:var(--accent-blue);margin-bottom:4px;text-shadow:0 0 18px rgba(0,212,255,0.18)}
+.stat-label {font-size:11px;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase}
+.mission-card {background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(157,78,221,0.08));border:1px solid rgba(0,212,255,0.22);box-shadow:0 18px 40px rgba(0,0,0,0.26)}
+.mission-card::after {opacity:0.65}
+.mission-card:hover {border-color:rgba(0,212,255,0.4);box-shadow:0 20px 48px rgba(0,0,0,0.34),0 0 0 1px rgba(0,212,255,0.16)}
+.mission-header {display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mission-title {font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase}
+.mission-xp {font-size:12px;color:var(--accent-amber);font-weight:600;letter-spacing:1px}
+.mission-item {display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:14px;margin-bottom:10px;cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden}
+.mission-item::before {content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0),rgba(0,212,255,0.06),rgba(157,78,221,0));opacity:0;transition:opacity 0.25s}
+.mission-item:hover::before,.mission-item:active::before {opacity:1}
+.mission-item:hover,.mission-item:active {border-color:rgba(0,212,255,0.45);background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(157,78,221,0.05));transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.18)}
+.mission-item.completed {opacity:0.5;border-color:var(--success)}
+.mission-item.completed .mission-check {background:var(--success);border-color:var(--success)}
+.mission-item.active {border-color:rgba(255,170,0,0.45);background:linear-gradient(135deg,rgba(255,170,0,0.12),rgba(0,212,255,0.04))}
+.mission-item.timed {flex-wrap:wrap}
+.mission-check {width:24px;height:24px;border:2px solid var(--text-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;background:rgba(255,255,255,0.02)}
+.mission-check::after {content:'✓';color:var(--bg-primary);font-size:14px;font-weight:bold;opacity:0;transition:opacity 0.3s}
+.mission-item.completed .mission-check::after {opacity:1}
+.mission-text {font-size:14px;line-height:1.4}
+.mission-meta {margin-left:auto;text-align:right;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.mission-badge {font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid var(--glass-border);color:var(--text-secondary)}
+.mission-badge.timed {color:var(--accent-amber);border-color:rgba(255,170,0,0.35)}
+.mission-badge.done {color:var(--success);border-color:rgba(0,255,136,0.35)}
+.mission-actions {display:flex;gap:8px;width:100%;margin-top:8px;flex-wrap:wrap}
+.mission-actions .btn {width:auto;flex:1;min-width:120px;padding:10px 14px;font-size:11px;letter-spacing:1px}
+.mission-timer {font-family:'Orbitron',sans-serif;font-size:18px;color:var(--accent-amber)}
+.stats-grid .stat-item {position:relative;overflow:hidden}
+.stats-grid .stat-item::before {content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent-blue),var(--accent-purple));opacity:0.9}
+.stats-grid .stat-item:nth-child(2)::before {background:linear-gradient(180deg,var(--accent-amber),var(--accent-rose))}
+.inner-state-bar {display:flex;align-items:center;gap:12px;padding:16px;background:var(--glass);border-radius:12px;margin-bottom:20px}
+.state-indicator {width:16px;height:16px;border-radius:50%;background:var(--accent-blue);box-shadow:0 0 15px currentColor;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse {0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:0.7}}
+.state-info {flex:1}
+.state-name {font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:1px;margin-bottom:2px}
+.state-desc {font-size:12px;color:var(--text-secondary)}
+.training-header {text-align:center;margin-bottom:30px}
+.training-title {font-size:20px;margin-bottom:8px}
+.training-phase {font-size:12px;color:var(--text-secondary);letter-spacing:3px;text-transform:uppercase}
+.breathing-container {display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px}
+.breath-circle {width:200px;height:200px;border-radius:50%;border:2px solid var(--accent-blue);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 40px rgba(0,212,255,0.1),inset 0 0 40px rgba(0,212,255,0.05)}
+.breath-circle::before {content:'';position:absolute;width:100%;height:100%;border-radius:50%;border:1px solid var(--accent-blue);opacity:0.3;animation:breathRing 4s ease-in-out infinite}
+.breath-circle::after {content:'';position:absolute;width:80%;height:80%;border-radius:50%;border:1px solid var(--accent-blue);opacity:0.2;animation:breathRing 4s ease-in-out infinite 0.5s}
+@keyframes breathRing {0%,100%{transform:scale(1);opacity:0.3}50%{transform:scale(1.3);opacity:0}}
+.breath-inner {width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,0.2),transparent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;animation:breathScale 4s ease-in-out infinite}
+@keyframes breathScale {0%,100%{transform:scale(0.9)}50%{transform:scale(1.1)}}
+.breath-instruction {margin-top:40px;font-size:18px;letter-spacing:3px;text-transform:uppercase;color:var(--accent-blue)}
+.breath-timer {margin-top:10px;font-family:'Orbitron',sans-serif;font-size:48px;font-weight:700}
+.emotion-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.emotion-btn {padding:20px 10px;border:1px solid var(--glass-border);background:var(--glass);border-radius:12px;color:var(--text-primary);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.emotion-btn:hover,.emotion-btn:active,.emotion-btn.selected {border-color:var(--accent-blue);background:rgba(0,212,255,0.1);transform:translateY(-2px)}
+.emotion-icon {font-size:28px}
+.reflection-input {width:100%;min-height:120px;background:var(--bg-secondary);border:1px solid var(--glass-border);border-radius:12px;padding:16px;color:var(--text-primary);font-family:'Rajdhani',sans-serif;font-size:16px;resize:none;margin-bottom:16px}
+.reflection-input:focus {outline:none;border-color:var(--accent-blue);box-shadow:0 0 20px rgba(0,212,255,0.1)}
+.reflection-question {font-size:16px;margin-bottom:12px;color:var(--text-secondary);line-height:1.5}
+.schedule-timeline {position:relative;padding-left:30px}
+.schedule-timeline::before {content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent-blue),var(--accent-purple))}
+.schedule-item {position:relative;padding:16px;background:var(--glass);border-radius:12px;margin-bottom:12px;border:1px solid var(--glass-border)}
+.schedule-item::before {content:'';position:absolute;left:-26px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--accent-blue);box-shadow:0 0 10px rgba(0,212,255,0.5)}
+.schedule-item::after {content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px;background:linear-gradient(180deg,var(--accent-blue),var(--accent-purple));opacity:0.8}
+.schedule-item:hover {border-color:rgba(0,212,255,0.38);transform:translateY(-1px);box-shadow:0 14px 34px rgba(0,0,0,0.22)}
+.schedule-time {font-family:'Orbitron',sans-serif;font-size:12px;color:var(--accent-blue);margin-bottom:4px}
+.schedule-name {font-size:16px;font-weight:600}
+.schedule-type {font-size:12px;color:var(--text-secondary);margin-top:4px}
+.schedule-form {display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 20px}
+.schedule-input {width:100%;padding:14px 12px;border-radius:10px;border:1px solid var(--glass-border);background:var(--bg-secondary);color:var(--text-primary);font-family:'Rajdhani',sans-serif;font-size:14px}
+.schedule-input:focus {outline:none;border-color:var(--accent-blue)}
+.schedule-row-actions {display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.schedule-row-actions .btn {width:auto;flex:1;min-width:110px;padding:10px 12px;font-size:11px}
+.schedule-item.dragging {opacity:0.45;border-color:var(--accent-amber)}
+.bottom-nav {position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(10,10,15,0.88),rgba(10,10,15,0.96));backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);box-shadow:0 -10px 30px rgba(0,0,0,0.22);display:flex;justify-content:space-around;padding:12px 0;z-index:100;max-width:480px;margin:0 auto}
+.nav-item {display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 16px;color:var(--text-dim);cursor:pointer;transition:all 0.3s;border:none;background:none;font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.nav-item.active {color:var(--accent-blue);text-shadow:0 0 14px rgba(0,212,255,0.25)}
+.nav-item.active svg {filter:drop-shadow(0 0 8px rgba(0,212,255,0.35))}
+.nav-item svg {width:24px;height:24px}
+.progress-container {margin:20px 0}
+.progress-label {display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;color:var(--text-secondary)}
+.progress-bar {height:6px;background:var(--bg-tertiary);border-radius:3px;overflow:hidden}
+.progress-fill {height:100%;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));border-radius:3px;transition:width 1s ease-out;box-shadow:0 0 10px rgba(0,212,255,0.3)}
+.xp-toast {position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(157,78,221,0.2));border:1px solid var(--accent-blue);border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:12px;z-index:1000;transition:transform 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);backdrop-filter:blur(10px)}
+.xp-toast.show {transform:translateX(-50%) translateY(0)}
+.xp-toast-icon {font-size:24px}
+.xp-toast-text {font-family:'Orbitron',sans-serif;font-size:14px;color:var(--accent-blue)}
+.xp-toast.success {border-color:var(--success);background:linear-gradient(135deg,rgba(0,255,136,0.22),rgba(0,212,255,0.15))}
+.xp-toast.success .xp-toast-text {color:var(--success)}
+.xp-toast.warning {border-color:var(--accent-amber);background:linear-gradient(135deg,rgba(255,170,0,0.2),rgba(255,95,143,0.14))}
+.xp-toast.warning .xp-toast-text {color:var(--accent-amber)}
+.xp-toast.info {border-color:var(--accent-blue);background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(157,78,221,0.18))}
+.modal-overlay {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:2200;opacity:0;pointer-events:none;transition:opacity 0.5s}
+.modal-overlay.show {opacity:1;pointer-events:all}
+.modal-content {background:var(--bg-secondary);border:1px solid var(--accent-amber);border-radius:20px;padding:40px;text-align:center;max-width:320px;width:90%;max-height:86vh;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 0 60px rgba(255,170,0,0.2);transform:scale(0.8);transition:transform 0.5s;position:relative;overflow:hidden}
+.modal-content::before {content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-gold),transparent);opacity:0.8}
+.modal-overlay.show .modal-content {transform:scale(1)}
+.rank-up-title {font-family:'Orbitron',sans-serif;font-size:18px;color:var(--accent-amber);margin-bottom:20px;letter-spacing:3px}
+.rank-up-name {font-size:28px;font-weight:700;margin-bottom:10px;text-shadow:0 0 20px rgba(255,170,0,0.3)}
+.rank-up-desc {font-size:14px;color:var(--text-secondary);margin-bottom:30px;line-height:1.6}
+.name-field {width:100%;padding:16px 18px;border-radius:12px;border:1px solid var(--glass-border);background:var(--bg-primary);color:var(--text-primary);font-family:'Rajdhani',sans-serif;font-size:18px;margin:18px 0 12px}
+.name-field:focus {outline:none;border-color:var(--accent-blue);box-shadow:0 0 20px rgba(0,212,255,0.1)}
+.save-actions {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.save-note {font-size:12px;color:var(--text-secondary);line-height:1.6;margin-top:12px}
+.dashboard-greeting {font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:2px;color:var(--accent-amber);margin-bottom:10px}
+.mission-highlight {padding:16px 18px;background:linear-gradient(135deg,rgba(255,170,0,0.08),rgba(0,212,255,0.05));border:1px solid rgba(255,170,0,0.18);border-radius:14px;margin-bottom:16px}
+.mission-highlight-label {font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:6px}
+.mission-highlight-text {font-size:16px;line-height:1.5}
+.profile-controls {display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.profile-controls .btn {font-size:11px;letter-spacing:1px}
+.profile-quick-actions {display:flex;gap:8px;justify-content:center;margin-top:12px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))}
+.profile-portal-actions {display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;padding:8px}
+.profile-portal-actions .btn {width:auto;min-width:130px;flex:1 1 42%}
+.screen #rank-list .progress-container {padding:14px 14px 12px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015));border:1px solid rgba(255,255,255,0.06);box-shadow:0 10px 24px rgba(0,0,0,0.12)}
+.screen #rank-list .progress-label {margin-bottom:10px;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.screen #rank-list .progress-bar {height:8px;border-radius:999px;background:rgba(255,255,255,0.06)}
+.screen #rank-list .progress-fill {border-radius:999px;box-shadow:0 0 14px rgba(0,212,255,0.24)}
+.file-input {display:none}
+.challenge-panel {position:fixed;left:50%;top:12px;transform:translateX(-50%);width:min(460px,calc(100% - 24px));z-index:1100;background:rgba(18,18,26,0.96);border:1px solid rgba(255,170,0,0.35);border-radius:18px;padding:16px 18px;backdrop-filter:blur(18px);box-shadow:0 0 40px rgba(255,170,0,0.12);display:none}
+.challenge-panel.show {display:block}
+.challenge-panel-header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.challenge-panel-title {font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:var(--accent-amber);text-transform:uppercase}
+.challenge-panel-timer {font-family:'Orbitron',sans-serif;font-size:26px;color:var(--text-primary)}
+.challenge-panel-text {font-size:14px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px}
+.challenge-panel-actions {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.challenge-panel-actions .btn {padding:12px 14px;font-size:11px}
+.challenge-panel-actions .btn:disabled {opacity:0.4;cursor:not-allowed}
+.stats-modal-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.stats-modal-item {background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(157,78,221,0.06));border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;text-align:left;box-shadow:0 10px 24px rgba(0,0,0,0.15)}
+.stats-modal-value {font-family:'Orbitron',sans-serif;font-size:20px;color:var(--accent-blue);margin-bottom:6px}
+.stats-modal-label {font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-secondary)}
+.chart-container {margin-top:12px;padding:12px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015));border:1px solid rgba(255,255,255,0.08)}
+.chart-title {font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--text-primary);margin-bottom:12px}
+.chart-canvas {width:100%;height:136px;display:block;border-radius:12px;background:linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.02))}
+.achievement-item {display:flex;align-items:flex-start;gap:12px;padding:14px 14px;margin-bottom:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01));position:relative;overflow:hidden;transition:all 0.25s}
+.achievement-item::before {content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0),rgba(0,212,255,0.08),rgba(157,78,221,0));opacity:0;transition:opacity 0.25s}
+.achievement-item:hover {border-color:rgba(0,212,255,0.42);box-shadow:0 14px 30px rgba(0,0,0,0.2),0 0 0 1px rgba(0,212,255,0.14);transform:translateY(-1px)}
+.achievement-item:hover::before {opacity:1}
+.achievement-icon {width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);position:relative;z-index:1}
+.achievement-icon.earned {border-color:rgba(0,255,136,0.4);box-shadow:0 0 18px rgba(0,255,136,0.2);background:linear-gradient(135deg,rgba(0,255,136,0.18),rgba(0,255,136,0.06))}
+.achievement-icon.locked {border-color:rgba(255,255,255,0.14);opacity:0.85}
+.achievement-info {text-align:left;flex:1;position:relative;z-index:1}
+.achievement-name {font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.achievement-desc {font-size:13px;color:var(--text-secondary);line-height:1.5}
+.emotion-empty-state {padding:10px 4px 2px}
+.emotion-empty-title {font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:10px}
+.emotion-empty-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.emotion-empty-tip {padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));font-size:12px;color:var(--text-secondary);line-height:1.4}
+#stats-modal .modal-content {max-width:720px;width:min(94vw,720px);padding:18px 18px 14px;display:flex;flex-direction:column;gap:10px}
+#stats-modal .modal-content > div:first-child {position:sticky;top:0;background:var(--bg-secondary);z-index:2;padding-bottom:6px}
+#stats-content {overflow-y:auto;max-height:calc(82vh - 118px);padding-right:4px}
+#stats-modal .modal-content > div:last-child {position:sticky;bottom:0;background:var(--bg-secondary);padding-top:8px}
+::-webkit-scrollbar {width:4px}
+::-webkit-scrollbar-track {background:var(--bg-primary)}
+::-webkit-scrollbar-thumb {background:var(--accent-blue);border-radius:2px}
+.text-center {text-align:center}
+.mb-20 {margin-bottom:20px}
+.mt-20 {margin-top:20px}
+.hidden {display:none !important}
+.intention-grid {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.intention-card {padding:20px;border:1px solid var(--glass-border);background:var(--glass);border-radius:12px;text-align:center;cursor:pointer;transition:all 0.3s}
+.intention-card:hover,.intention-card:active,.intention-card.selected {border-color:var(--accent-blue);background:rgba(0,212,255,0.1);transform:translateY(-2px)}
+.intention-icon {font-size:32px;margin-bottom:8px}
+.intention-name {font-size:14px;font-weight:600}
+.timer-display {font-family:'Orbitron',sans-serif;font-size:64px;font-weight:700;text-align:center;margin:30px 0;text-shadow:0 0 30px rgba(0,212,255,0.3)}
+@media(max-width:480px){.app-container{max-width:100%}.bottom-nav{max-width:100%}}
+/* Ensure emotion log entries scroll area has sensible defaults */
+#emotion-log-entries{overflow-y:auto;overflow-x:hidden;padding-bottom:6px;min-height:40px}
+.screen#screen-emotion-log {padding-top:4px}
+.screen#screen-emotion-log .training-header {margin-bottom:8px}
+.emotion-log-hero {display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.emotion-log-chip {flex:1 1 120px;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(157,78,221,0.06));border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 24px rgba(0,0,0,0.12)}
+.emotion-log-chip-label {font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:6px}
+.emotion-log-chip-value {font-family:'Orbitron',sans-serif;font-size:16px;color:var(--accent-blue)}
+.emotion-log-panel {margin-top:6px}
+.emotion-log-actions {display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px}
+.emotion-log-actions .emotion-btn {padding:14px 10px}
+
+/* Light theme overrides */
+.theme-light { --bg-primary:#eef3fb; --bg-secondary:#ffffff; --bg-tertiary:#e2e8f3; --text-primary:#101727; --text-secondary:#51607d; --text-dim:#7d8aa3; --glass:rgba(16,23,39,0.035); --glass-border:rgba(16,23,39,0.08); --panel-gradient:linear-gradient(135deg,rgba(255,255,255,0.96),rgba(241,246,255,0.92)); --panel-glow:0 16px 34px rgba(15,23,42,0.08); }
+.theme-light .bg-gradient {background:radial-gradient(ellipse at 20% 50%,rgba(0,212,255,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(157,78,221,0.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(255,170,0,0.05) 0%,transparent 50%)}
+.theme-light .bg-orb {opacity:0.26;mix-blend-mode:normal}
+.theme-light .card,
+.theme-light .mission-card,
+.theme-light .stat-item,
+.theme-light .modal-content,
+.theme-light .challenge-panel {box-shadow:0 16px 30px rgba(15,23,42,0.08)}
+.theme-light .mission-item {background:linear-gradient(135deg,rgba(255,255,255,0.86),rgba(241,246,255,0.86));border-color:rgba(16,23,39,0.06)}
+.theme-light .mission-item:hover,.theme-light .mission-item:active {background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(157,78,221,0.06));border-color:rgba(0,140,210,0.22)}
+.theme-light .emotion-btn {background:linear-gradient(135deg,rgba(255,255,255,0.92),rgba(241,246,255,0.8));border-color:rgba(16,23,39,0.08)}
+.theme-light .btn {background:linear-gradient(135deg,rgba(255,255,255,0.94),rgba(241,246,255,0.86));border-color:rgba(16,23,39,0.08)}
+.theme-light .btn-primary {background:linear-gradient(135deg,rgba(0,212,255,0.16),rgba(0,212,255,0.06))}
+.theme-light .btn-amber {background:linear-gradient(135deg,rgba(255,170,0,0.16),rgba(255,170,0,0.06))}
+.theme-light .btn-secondary {background:linear-gradient(135deg,rgba(157,78,221,0.14),rgba(157,78,221,0.06))}
+.theme-light .emotion-log-chip,
+.theme-light .stats-modal-item,
+.theme-light .chart-container,
+.theme-light .screen #rank-list .progress-container {box-shadow:0 12px 28px rgba(15,23,42,0.08)}
+.theme-light .screen#screen-emotion-log {padding-top:0}
+.theme-light .achievement-item,
+.theme-light .emotion-empty-tip {border-color:rgba(16,23,39,0.1);background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(241,246,255,0.82))}
+.theme-light .achievement-item:hover {border-color:rgba(0,140,210,0.3);box-shadow:0 14px 26px rgba(15,23,42,0.12),0 0 0 1px rgba(0,140,210,0.12)}
+.theme-light .training-title {color:#0f1a30;text-shadow:none}
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="bg-stars" id="stars"></div>
+<div class="bg-gradient"></div>
+<div class="bg-orb orb-a"></div>
+<div class="bg-orb orb-b"></div>
+<div class="bg-orb orb-c"></div>
+<div class="challenge-panel" id="challenge-panel">
+<div class="challenge-panel-header">
+<div class="challenge-panel-title" id="challenge-panel-title">Active Challenge</div>
+<div class="challenge-panel-timer" id="challenge-panel-timer">00:00</div>
+</div>
+<div class="challenge-panel-text" id="challenge-panel-text">Stay until the timer completes to claim the reward.</div>
+<div class="challenge-panel-actions">
+<button class="btn" id="challenge-panel-abort" onclick="abortActiveChallenge()">End Early</button>
+<button class="btn btn-amber" id="challenge-panel-finish" onclick="finishActiveChallenge()">Complete</button>
+</div>
+</div>
+<div class="app-container">
+<div class="transition-overlay" id="transition-overlay"></div>
+<!-- INTRO SCREEN -->
+<div class="screen active" id="screen-intro">
+<div class="intro-screen">
+<div class="force-symbol">
+<svg viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="45" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
+<circle cx="50" cy="50" r="35" stroke="#00d4ff" stroke-width="1" opacity="0.5"/>
+<circle cx="50" cy="50" r="25" stroke="#00d4ff" stroke-width="2" opacity="0.8"/>
+<line x1="50" y1="5" x2="50" y2="95" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+<line x1="5" y1="50" x2="95" y2="50" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+<circle cx="50" cy="50" r="8" fill="#00d4ff" opacity="0.6">
+<animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="0.6;0.3;0.6" dur="3s" repeatCount="indefinite"/>
+</circle>
+</svg>
+</div>
+<div class="intro-logo title-glow">THE FORCE WITHIN</div>
+<div class="intro-subtitle">Inner Mastery System</div>
+<div class="intro-user-name" id="intro-user-name">AWAITING TRAINER NAME</div>
+<div class="intro-subtitle" id="intro-greeting">WELCOME</div>
+<div class="intro-quote">
+You are not your thoughts.<br>
+You are not your emotions.<br>
+You are the awareness behind them.
+</div>
+<button class="btn btn-primary has-icon" data-icon="✦" onclick="enterApp()" id="intro-action-btn">
+<span id="intro-action-text" class="btn-label">Enter Training</span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</button>
+</div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div class="screen" id="screen-dashboard">
+<div class="dashboard-header">
+<div class="dashboard-greeting" id="dashboard-greeting">WELCOME, TRAINER</div>
+<div class="rank-badge">
+<span class="rank-icon" id="rank-icon">⚔️</span>
+<span id="rank-name">INITIATE</span>
+</div>
+<div style="font-size:12px;color:var(--text-secondary);letter-spacing:2px">LEVEL <span id="user-level">1</span></div>
+</div>
+
+<div class="inner-state-bar">
+<div class="state-indicator" id="state-indicator"></div>
+<div class="state-info">
+<div class="state-name" id="state-name">CALM</div>
+<div class="state-desc">Inner state stable</div>
+</div>
+</div>
+
+<div class="vitality-container">
+<div class="vitality-ring">
+<svg width="180" height="180" viewBox="0 0 180 180">
+<circle class="vitality-ring-bg" cx="90" cy="90" r="70"/>
+<circle class="vitality-ring-fill" id="vitality-ring" cx="90" cy="90" r="70"/>
+</svg>
+<div class="vitality-center">
+<div class="vitality-value" id="vitality-value">75</div>
+<div class="vitality-label">Vitality</div>
+</div>
+</div>
+<div class="vitality-state" id="vitality-state">STABLE</div>
+</div>
+
+<div class="stats-grid">
+<div class="stat-item"><div class="stat-value" id="stat-xp">0</div><div class="stat-label">XP</div></div>
+<div class="stat-item"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Day Streak</div></div>
+</div>
+
+<div class="progress-container">
+<div class="progress-label"><span>Progress to Next Rank</span><span id="progress-text">0%</span></div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<div class="card mission-card">
+<div class="mission-header">
+<span class="mission-title">Today's Missions</span>
+<span class="mission-xp">+<span id="mission-total-xp">150</span> XP</span>
+</div>
+<div class="mission-highlight">
+<div class="mission-highlight-label">Today's Mission</div>
+<div class="mission-highlight-text" id="daily-mission-text">Pause before your first reaction and choose a conscious response.</div>
+</div>
+<div id="missions-list"></div>
+</div>
+
+<button class="btn btn-primary mt-20 has-icon" data-icon="⚔️" onclick="startTraining()">
+<span class="btn-label">Start Morning Training</span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</button>
+
+<button class="btn btn-secondary mt-12 has-icon" data-icon="◌" onclick="navigateTo('emotion-log')">
+<span class="btn-label">Emotion Log</span>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+</button>
+</div>
+
+<!-- TRAINING SCREEN -->
+<div class="screen" id="screen-training">
+<div class="training-header">
+<div class="training-title">Morning Training</div>
+<div class="training-phase" id="training-user-line">For Trainer</div>
+<div class="training-phase" id="training-phase">Phase 1 of 3</div>
+</div>
+
+<button class="btn btn-primary mt-20 has-icon" data-icon="✦" onclick="handleTrainingPrimaryAction()" id="training-start-button"><span class="btn-label">Start Morning Training</span></button>
+
+<div id="phase-breath">
+<div class="breathing-container">
+<div class="breath-circle"><div class="breath-inner" id="breath-inner">4</div></div>
+<div class="breath-instruction" id="breath-instruction">INHALE</div>
+<div class="breath-timer" id="breath-timer">05:00</div>
+</div>
+<div class="text-center" style="color:var(--text-secondary);font-size:14px;margin-top:20px">
+4-4-6 Breathing Cycle<br>Inhale · Hold · Exhale
+</div>
+<div class="mt-20" style="display:flex;gap:12px">
+<button class="btn has-icon" data-icon="⟡" onclick="abortTrainingSession()" style="flex:1"><span class="btn-label">End Early</span></button>
+</div>
+</div>
+
+<div id="phase-awareness" class="hidden">
+<div class="card">
+<div class="reflection-question">Scan your body. Notice any tension without judgment.</div>
+<textarea class="reflection-input" id="body-scan-input" placeholder="What do you feel in your body right now🔒"></textarea>
+</div>
+<div class="card">
+<div class="reflection-question">What emotion is present right now?</div>
+<div class="emotion-grid">
+<button class="emotion-btn" onclick="selectEmotion(this,'calm')"><span class="emotion-icon">🌊</span><span>Calm</span></button>
+<button class="emotion-btn" onclick="selectEmotion(this,'stress')"><span class="emotion-icon">⚡</span><span>Stress</span></button>
+<button class="emotion-btn" onclick="selectEmotion(this,'anxiety')"><span class="emotion-icon">🌪️</span><span>Anxiety</span></button>
+<button class="emotion-btn" onclick="selectEmotion(this,'anger')"><span class="emotion-icon">🔥</span><span>Anger</span></button>
+<button class="emotion-btn" onclick="selectEmotion(this,'excitement')"><span class="emotion-icon">✨</span><span>Excited</span></button>
+<button class="emotion-btn" onclick="selectEmotion(this,'sadness')"><span class="emotion-icon">🌧️</span><span>Sad</span></button>
+</div>
+</div>
+</div>
+
+<div id="phase-intention" class="hidden">
+<div class="card">
+<div class="reflection-question" style="text-align:center;font-size:18px;margin-bottom:20px">Choose your intention for today</div>
+<div class="intention-grid">
+<div class="intention-card" onclick="selectIntention(this,'calm')"><div class="intention-icon">🛡️</div><div class="intention-name">Calm Under Pressure</div></div>
+<div class="intention-card" onclick="selectIntention(this,'discipline')"><div class="intention-icon">⚔️</div><div class="intention-name">Discipline</div></div>
+<div class="intention-card" onclick="selectIntention(this,'awareness')"><div class="intention-icon">👁️</div><div class="intention-name">Awareness</div></div>
+<div class="intention-card" onclick="selectIntention(this,'control')"><div class="intention-icon">🎯</div><div class="intention-name">Control Impulses</div></div>
+<div class="intention-card" onclick="selectIntention(this,'focus')"><div class="intention-icon">🔭</div><div class="intention-name">Deep Focus</div></div>
+<div class="intention-card" onclick="selectIntention(this,'patience')"><div class="intention-icon">⏳</div><div class="intention-name">Patience</div></div>
+</div>
+<div id="selected-intention-display" style="text-align:center;margin-top:20px;padding:16px;background:rgba(0,212,255,0.1);border-radius:12px;border:1px solid rgba(0,212,255,0.2);display:none">
+<div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px">Daily Force Alignment</div>
+<div id="intention-text" style="font-family:'Orbitron',sans-serif;font-size:16px;color:var(--accent-blue)"></div>
+</div>
+</div>
+</div>
+
+<div class="mt-20" style="display:flex;gap:12px;justify-content:center">
+<button class="btn btn-primary hidden" onclick="nextPhase()" id="btn-next" style="flex:0 1 200px">Continue to Awareness</button>
+</div>
+</div>
+
+<!-- EVENING RESET SCREEN -->
+<div class="screen" id="screen-evening">
+<div class="training-header">
+<div class="training-title">Evening Reset</div>
+<div class="training-phase" id="evening-user-line">For Trainer</div>
+<div class="training-phase">Reflect & Release</div>
+</div>
+
+<div class="card">
+<div class="reflection-question">When did you lose control today?</div>
+<textarea class="reflection-input" id="reflect-loss" placeholder="Describe a moment where you reacted instead of responded..."></textarea>
+</div>
+
+<div class="card">
+<div class="reflection-question">When were you calm and in control?</div>
+<textarea class="reflection-input" id="reflect-calm" placeholder="Describe a moment of clarity and calm..."></textarea>
+</div>
+
+<div class="card">
+<div class="reflection-question">What triggered strong emotions today?</div>
+<textarea class="reflection-input" id="reflect-trigger" placeholder="Identify the trigger..."></textarea>
+</div>
+
+<div class="card">
+<div class="reflection-question">Did you choose response or react today?</div>
+<div class="emotion-grid" style="grid-template-columns:1fr 1fr">
+<button class="emotion-btn" onclick="selectResponse(this,'response')"><span class="emotion-icon">🛡️</span><span>Chose Response</span></button>
+<button class="emotion-btn" onclick="selectResponse(this,'react')"><span class="emotion-icon">⚡</span><span>Mostly Reacted</span></button>
+</div>
+</div>
+
+<div class="breathing-container" style="min-height:200px">
+<div class="breath-circle" style="width:150px;height:150px"><div class="breath-inner" style="width:90px;height:90px;font-size:12px">RESET</div></div>
+<div class="breath-instruction" style="margin-top:20px;font-size:14px">Breathe. Release. Reset.</div>
+</div>
+
+<button class="btn btn-primary mt-20 has-icon" data-icon="↺" onclick="completeEveningReset()"><span class="btn-label">Complete Reset</span></button>
+<div class="text-center mt-20" style="color:var(--text-secondary);font-style:italic;font-size:14px">"The day is complete. The mind resets."</div>
+</div>
+
+<!-- SCHEDULE SCREEN -->
+<div class="screen" id="screen-schedule">
+<div class="training-header">
+<div class="training-title">Schedule Builder</div>
+<div class="training-phase" id="schedule-user-line">For Trainer</div>
+<div class="training-phase">Your Daily Structure</div>
+</div>
+
+<div class="card">
+<div class="mission-title" style="margin-bottom:14px">Create Reminder</div>
+<div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+  <div style="font-size:12px;color:var(--text-secondary);min-width:70px">Weekday</div>
+  <div id="weekday-selector" style="display:flex;gap:6px"></div>
+</div>
+<div class="schedule-form">
+<input class="schedule-input" id="schedule-start-input" type="time" value="07:00">
+<input class="schedule-input" id="schedule-end-input" type="time" value="07:30">
+<input class="schedule-input" id="schedule-name-input" type="text" placeholder="Training / work block">
+<input class="schedule-input" id="schedule-type-input" type="text" placeholder="Calm checkpoint">
+</div>
+<button class="btn btn-primary has-icon" data-icon="＋" onclick="addScheduleItem()"><span class="btn-label">Add Schedule Item</span></button>
+<button class="btn has-icon" data-icon="⏰" style="margin-top:10px" onclick="enableScheduleNotifications()"><span class="btn-label">Enable Reminders</span></button>
+<div class="save-note">Build a daily structure for work, training, meditation, and calm checkpoints. Everything is saved locally.</div>
+</div>
+
+<div class="schedule-timeline" id="schedule-list"></div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div class="screen" id="screen-profile">
+<div class="training-header">
+<div class="training-title">Your Journey</div>
+<div class="training-phase" id="profile-user-line">For Trainer</div>
+<div class="training-phase">Progress & Achievements</div>
+</div>
+
+<div class="card" style="text-align:center;padding:30px">
+<div style="font-size:48px;margin-bottom:10px">⚔️</div>
+<div style="font-family:'Orbitron',sans-serif;font-size:24px;color:var(--accent-amber);margin-bottom:8px" id="profile-rank">INITIATE</div>
+<div style="font-size:14px;color:var(--text-secondary)">Level <span id="profile-level">1</span></div>
+</div>
+
+<div class="stats-grid">
+<div class="stat-item"><div class="stat-value" id="profile-xp">0</div><div class="stat-label">Total XP</div></div>
+<div class="stat-item"><div class="stat-value" id="profile-streak">0</div><div class="stat-label">Best Streak</div></div>
+<div class="stat-item"><div class="stat-value" id="profile-missions">0</div><div class="stat-label">Missions Done</div></div>
+<div class="stat-item"><div class="stat-value" id="profile-sessions">0</div><div class="stat-label">Sessions</div></div>
+</div>
+
+<div style="text-align:center;color:var(--text-secondary);margin-top:8px;font-size:13px">XP to next level: <span id="profile-next-xp">100</span></div>
+
+<div class="card">
+<div class="mission-title" style="margin-bottom:16px">Rank Progression</div>
+<div id="rank-list" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div class="progress-container"><div class="progress-label"><span>⚔️ Initiate</span><span id="rank-initiate">0/10</span></div><div class="progress-bar"><div class="progress-fill" id="bar-initiate" style="width:0%"></div></div></div>
+<div class="progress-container"><div class="progress-label"><span>🛡️ Apprentice</span><span id="rank-apprentice">0/25</span></div><div class="progress-bar"><div class="progress-fill" id="bar-apprentice" style="width:0%"></div></div></div>
+<div class="progress-container"><div class="progress-label"><span>⚡ Adept</span><span id="rank-adept">0/50</span></div><div class="progress-bar"><div class="progress-fill" id="bar-adept" style="width:0%"></div></div></div>
+<div class="progress-container"><div class="progress-label"><span>🌟 Guardian</span><span id="rank-guardian">0/75</span></div><div class="progress-bar"><div class="progress-fill" id="bar-guardian" style="width:0%"></div></div></div>
+<div class="progress-container"><div class="progress-label"><span>👑 Master</span><span id="rank-master">0/100</span></div><div class="progress-bar"><div class="progress-fill" id="bar-master" style="width:0%"></div></div></div>
+<div class="progress-container"><div class="progress-label"><span>🔮 Architect</span><span id="rank-architect">0/100</span></div><div class="progress-bar"><div class="progress-fill" id="bar-architect" style="width:0%"></div></div></div>
+</div>
+</div>
+
+<div class="card">
+<div class="mission-title" style="margin-bottom:16px">Data & Profile</div>
+<div class="profile-controls" style="grid-template-columns:1fr 1fr 1fr">
+<button class="btn has-icon" data-icon="⇩" onclick="exportSave()" title="Save progress to JSON"><span class="btn-label">Export Progress</span></button>
+<button class="btn has-icon" data-icon="⇧" onclick="document.getElementById('save-file-input').click()" title="Restore from backup"><span class="btn-label">Import Progress</span></button>
+<button class="btn has-icon" data-icon="✎" onclick="openNameModal()" title="Update trainer name"><span class="btn-label">Change Name</span></button>
+</div>
+<input class="file-input" type="file" id="save-file-input" accept="application/json,.json" onchange="importSave(event)">
+<div class="save-note">Progress auto-saves locally in your browser. Exporting creates a portable save.json file you can keep on this device.</div>
+</div>
+
+<div class="profile-quick-actions">
+  <button class="btn" onclick="toggleTheme()">Toggle Theme</button>
+</div>
+
+<div class="card">
+<div class="profile-portal-actions">
+  <button class="btn has-icon" data-icon="☰" onclick="openReports()"><span class="btn-label">Monthly Reports</span></button>
+  <button class="btn has-icon" data-icon="◫" onclick="openStats()"><span class="btn-label">Statistics</span></button>
+  <button class="btn has-icon" data-icon="✦" onclick="openAchievements()"><span class="btn-label">Achievements</span></button>
+  <button class="btn has-icon" data-icon="⌘" onclick="openPhilosophy()"><span class="btn-label">Philosophy</span></button>
+  <button class="btn has-icon" data-icon="⟢" onclick="openTimeline()"><span class="btn-label">Journey Timeline</span></button>
+</div>
+</div>
+
+<!-- REPORTS MODAL -->
+<div class="modal-overlay" id="reports-modal">
+  <div class="modal-content" style="max-width:720px;overflow:auto">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px">Monthly Reports</div>
+    <div id="reports-content">Loading...</div>
+    <div style="margin-top:12px;display:flex;justify-content:center"><button class="btn" onclick="document.getElementById('reports-modal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+
+<!-- STATS MODAL -->
+<div class="modal-overlay" id="stats-modal">
+  <div class="modal-content" style="max-width:720px;overflow:auto">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px">Statistics</div>
+    <div id="stats-content">Loading...</div>
+    <div style="margin-top:12px;display:flex;justify-content:center"><button class="btn" onclick="document.getElementById('stats-modal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENTS MODAL -->
+<div class="modal-overlay" id="achievements-modal">
+  <div class="modal-content" style="max-width:640px;overflow:auto">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px">Achievements</div>
+    <div id="achievements-content">Loading...</div>
+    <div style="margin-top:12px;display:flex;justify-content:center"><button class="btn" onclick="document.getElementById('achievements-modal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY MODAL -->
+<div class="modal-overlay" id="philosophy-modal">
+  <div class="modal-content" style="max-width:640px;overflow:auto;text-align:left">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px">Philosophy</div>
+    <div style="color:var(--text-secondary);line-height:1.6">The practice is about noticing, pausing, and choosing. Use the tools here to cultivate awareness and intentional responses. Train regularly, reflect honestly, and track progress — mastery is built daily.</div>
+    <div style="margin-top:12px;display:flex;justify-content:center"><button class="btn" onclick="document.getElementById('philosophy-modal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+
+<!-- TIMELINE MODAL -->
+<div class="modal-overlay" id="timeline-modal">
+  <div class="modal-content" style="max-width:720px;overflow:auto">
+    <div style="font-size:18px;font-weight:700;margin-bottom:12px">Journey Timeline</div>
+    <div id="timeline-content">Loading...</div>
+    <div style="margin-top:12px;display:flex;justify-content:center"><button class="btn" onclick="document.getElementById('timeline-modal').classList.remove('show')">Close</button></div>
+  </div>
+</div>
+</div>
+
+<!-- EMOTION LOG SCREEN -->
+<div class="screen" id="screen-emotion-log">
+<div class="training-header">
+<div class="training-title">Emotion Tracker</div>
+<div class="training-phase" id="emotion-user-line">For Trainer</div>
+<div class="training-phase">Track Your Inner State</div>
+</div>
+<div class="emotion-log-hero">
+<div class="emotion-log-chip"><div class="emotion-log-chip-label">Today's Focus</div><div class="emotion-log-chip-value">Observe before reacting</div></div>
+<div class="emotion-log-chip"><div class="emotion-log-chip-label">Tracker Mode</div><div class="emotion-log-chip-value">Fast check-ins</div></div>
+</div>
+<div class="card">
+<div class="mission-title" style="margin-bottom:20px">Log Your Current Emotion</div>
+<div class="emotion-log-actions">
+<button class="btn emotion-btn" onclick="logEmotion('calm')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">🌊</span><span style="font-size:11px;margin-top:4px">Calm</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('stress')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">⚡</span><span style="font-size:11px;margin-top:4px">Stress</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('anxiety')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">🌪️</span><span style="font-size:11px;margin-top:4px">Anxiety</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('anger')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">🔥</span><span style="font-size:11px;margin-top:4px">Anger</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('excited')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">✨</span><span style="font-size:11px;margin-top:4px">Excited</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('sadness')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">🌧️</span><span style="font-size:11px;margin-top:4px">Sad</span></button>
+<button class="btn emotion-btn" onclick="logEmotion('focused')" style="flex-direction:column;padding:12px;height:auto"><span style="font-size:24px">🎯</span><span style="font-size:11px;margin-top:4px">Focused</span></button>
+</div>
+</div>
+<div class="card emotion-log-panel">
+<div class="mission-title" style="margin-bottom:16px">Your Patterns</div>
+<div id="emotion-log-entries"></div>
+</div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none">
+<button class="nav-item active" onclick="navigateTo('dashboard')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+<span>Core</span>
+</button>
+<button class="nav-item" onclick="navigateTo('training')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+<span>Train</span>
+</button>
+<button class="nav-item" onclick="navigateTo('evening')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+<span>Reset</span>
+</button>
+<button class="nav-item" onclick="navigateTo('schedule')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<span>Schedule</span>
+</button>
+<button class="nav-item" onclick="navigateTo('profile')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+<span>Journey</span>
+</button>
+</nav>
+
+<!-- XP TOAST -->
+<div class="xp-toast" id="xp-toast">
+<span class="xp-toast-icon">✨</span>
+<span class="xp-toast-text" id="xp-toast-text">+50 XP</span>
+</div>
+
+<!-- RANK UP MODAL -->
+<div class="modal-overlay" id="rank-modal">
+<div class="modal-content">
+<div class="rank-up-title">RANK ADVANCEMENT</div>
+<div class="rank-up-name" id="rank-up-name">APPRENTICE</div>
+<div class="rank-up-desc" id="rank-up-desc">You have shown discipline and awareness. The path continues.</div>
+<button class="btn btn-amber" onclick="closeRankModal()">Continue</button>
+</div>
+</div>
+
+<!-- NAME MODAL -->
+<div class="modal-overlay" id="name-modal">
+<div class="modal-content">
+<div class="rank-up-title">BEGIN TRAINING</div>
+<div class="rank-up-name" style="font-size:22px">Choose your name</div>
+<div class="rank-up-desc">This identity will be stored locally with your progress.</div>
+<input class="name-field" id="trainer-name-input" type="text" maxlength="24" placeholder="Enter name">
+<div class="save-actions">
+<button class="btn" onclick="fillSuggestedName('Nova')">Nova</button>
+<button class="btn" onclick="fillSuggestedName('Orion')">Orion</button>
+</div>
+<button class="btn btn-amber" style="margin-top:12px" onclick="confirmTrainerName()">Continue</button>
+<div class="save-note">You can rename yourself later from the dashboard or profile.</div>
+</div>
+</div>
+</div>
+<script>
+// ===== STATE MANAGEMENT =====
+const state = {
+  userName: '',
+  level: 1, xp: 0, streak: 0, vitality: 75,
+  rank: 'Initiate', rankIndex: 0,
+  missionsCompleted: 0, sessionsCompleted: 0,
+  currentPhase: 0, selectedEmotion: null, selectedIntention: null,
+  selectedResponse: null,
+  bodyScan: '',
+  reflectionLoss: '',
+  reflectionCalm: '',
+  reflectionTrigger: '',
+  trainingActive: false, breathInterval: null,
+  trainingSession: null,
+  activeChallenge: null,
+  schedule: [],
+  scheduleAlerts: {},
+  introSeen: false,
+  morningTrainingDate: '',
+  eveningResetDate: '',
+  lastSavedAt: null,
+  missionDate: '',
+  dailyMissionText: '',
+  missions: [],
+  emotionLog: [],
+  eveningReflections: [],
+  selectedScheduleDay: '',
+  weeklySchedule: {},
+  theme: 'dark',
+  remindersEnabled: false,
+  editingScheduleIdx: null,
+  highestRankIndex: 0,
+  longestStreak: 0,
+  totalEmotionLogs: 0,
+  achievementsEarned: [],
+  vitalityHistory: [],
+  xpHistory: [],
+  streakHistory: []
+};
+
+const defaultSchedule = [
+  {start:'06:30',end:'07:00',name:'Morning Training',type:'Centering & Intention'},
+  {start:'09:00',end:'10:30',name:'Deep Work Block',type:'Focus Session'},
+  {start:'12:00',end:'12:10',name:'Awareness Check-in',type:'5 min pause & scan'},
+  {start:'15:00',end:'15:05',name:'Reset Breath',type:'3 min breathing'},
+  {start:'18:00',end:'19:00',name:'Physical Training',type:'Body & Movement'},
+  {start:'21:00',end:'21:20',name:'Evening Reset',type:'Reflection & Release'}
+];
+
+const ACHIEVEMENTS = [
+  {id:'first_training',label:'First Training',desc:'Complete your first morning training',check: s => s.sessionsCompleted>=1},
+  {id:'first_mission',label:'First Mission',desc:'Complete your first daily mission',check: s => s.missionsCompleted>=1},
+  {id:'first_week',label:'First Week',desc:'Maintain a 7-day streak',check: s => s.longestStreak>=7},
+  {id:'streak_30',label:'30 Day Streak',desc:'Maintain a 30-day streak',check: s => s.longestStreak>=30},
+  {id:'emotion_observer',label:'Emotion Observer',desc:'Log 20 emotions',check: s => (s.totalEmotionLogs||0)>=20},
+  {id:'guardian_rank',label:'Guardian Rank',desc:'Reach Guardian rank',check: s => s.rankIndex>=3},
+  {id:'master_rank',label:'Master Rank',desc:'Reach Master rank',check: s => s.rankIndex>=4},
+  {id:'architect_rank',label:'Architect Rank',desc:'Reach Architect rank',check: s => s.rankIndex>=5}
+];
+
+const ranks = [
+  {name:'Initiate',icon:'⚔️',min:0,max:10,desc:'The journey begins. Learn awareness.'},
+  {name:'Apprentice',icon:'🛡️',min:10,max:25,desc:'Discipline grows. Notice emotions earlier.'},
+  {name:'Adept',icon:'⚡',min:25,max:50,desc:'Pause before reacting. Calm becomes natural.'},
+  {name:'Guardian',icon:'🌟',min:50,max:75,desc:'Stable control. Rare impulsive reactions.'},
+  {name:'Master',icon:'👑',min:75,max:100,desc:'Deep inner calm. Intentional responses.'},
+  {name:'Architect',icon:'🔮',min:100,max:999,desc:'Emotional sovereignty. The Force is with you.'}
+];
+
+// XP tuning constants (adjust these to change progression)
+const XP_BASE = 100; // base XP for level 1->2
+const XP_GROWTH = 1.15; // per-level growth multiplier (>1 increases required XP each level)
+
+const vitalityStates = [
+  {threshold:85,name:'PEAK',color:'#00ff88'},
+  {threshold:60,name:'HIGH',color:'#00d4ff'},
+  {threshold:40,name:'STABLE',color:'#ffaa00'},
+  {threshold:20,name:'LOW',color:'#ff6b35'},
+  {threshold:0,name:'DRAINED',color:'#ff2a6d'}
+];
+
+const missionPool = [
+  {text:'Perform 5 awareness check-ins - pause and name your emotion each time.',xp:15,kind:'counter',target:5},
+  {text:'Observe anger or stress without reacting - complete 1 full timed reset.',xp:14,kind:'timed',durationSec:300},
+  {text:'Take a 10-minute silent walk without phone, music, or input.',xp:18,kind:'timed',durationSec:600},
+  {text:'Pause before 3 emotional reactions today - choose response instead.',xp:16,kind:'counter',target:3},
+  {text:'Use 4-4-6 breathing cycle when stressed - complete full 5 minutes.',xp:14,kind:'timed',durationSec:300},
+  {text:'Spend 8 minutes in silent meditation focus without distraction.',xp:17,kind:'timed',durationSec:480},
+  {text:'Do 4 body scans during the day - notice sensation without judgment.',xp:15,kind:'counter',target:4},
+  {text:'Complete one 5-minute calm reset meditation now.',xp:16,kind:'timed',durationSec:300}
+];
+
+// ===== INITIALIZATION =====
+function init() {
+  createStars();
+  loadState();
+  normalizeLoadedState();
+  // default selected schedule day
+  if (!state.selectedScheduleDay) {
+    const dow = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()];
+    state.selectedScheduleDay = dow;
+  }
+  hydrateIntroAndSessionState();
+  hydrateDailyMissions();
+  syncProgression(false);
+  refreshIdentityUI();
+  restorePersistentInputs();
+  bindPersistentInputs();
+  updateDashboard();
+  renderMissions();
+  renderSchedule();
+  decoratePremiumButtons();
+  syncActiveChallengeUI();
+  syncTrainingUI();
+  setInterval(tickTimedSystems, 1000);
+  setInterval(syncTimeBasedUI, 60000);
+  // Inform native Android app (if present) about schedule and daily reminder registration
+  try {
+    if (window.AndroidBridge && typeof window.AndroidBridge.registerSchedule === 'function') {
+      window.AndroidBridge.registerSchedule(JSON.stringify(state.schedule || []));
+    }
+    if (window.AndroidBridge && typeof window.AndroidBridge.registerDailyReminder === 'function') {
+      window.AndroidBridge.registerDailyReminder();
+    }
+  } catch (e) {}
+  showNameModalIfNeeded();
+}
+
+function createStars() {
+  const container = document.getElementById('stars');
+  for(let i=0;i<100;i++){
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random()*100+'%';
+    star.style.top = Math.random()*100+'%';
+    star.style.width = Math.random()*3+1+'px';
+    star.style.height = star.style.width;
+    star.style.setProperty('--duration', Math.random()*3+2+'s');
+    star.style.setProperty('--opacity', Math.random()*0.7+0.3);
+    container.appendChild(star);
+  }
+}
+
+function loadState() {
+  const saved = localStorage.getItem('tfw_state');
+  if(!saved) return;
+  try {
+    Object.assign(state, JSON.parse(saved));
+  } catch (error) {
+    console.warn('Unable to load saved progress.', error);
+  }
+}
+
+function setActiveNav(screenName) {
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  const navIndexByScreen = {dashboard: 0, training: 1, evening: 2, schedule: 3, profile: 4};
+  const activeIndex = navIndexByScreen[screenName];
+  const navItems = document.querySelectorAll('.nav-item');
+  if (typeof activeIndex === 'number' && navItems[activeIndex]) {
+    navItems[activeIndex].classList.add('active');
+  }
+}
+
+function decoratePremiumButtons(root = document) {
+  const buttons = root.querySelectorAll ? root.querySelectorAll('button[data-icon]') : [];
+  buttons.forEach(button => {
+    if (button.dataset.iconDecorated === '1') return;
+    const labelText = button.textContent.trim();
+    if (!labelText) return;
+    button.classList.add('has-icon');
+    button.textContent = '';
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'btn-icon';
+    iconSpan.textContent = button.dataset.icon;
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'btn-label';
+    labelSpan.textContent = labelText;
+    button.append(iconSpan, labelSpan);
+    button.dataset.iconDecorated = '1';
+  });
+}
+
+function playCinematicTransition(screen) {
+  const appContainer = document.querySelector('.app-container');
+  const overlay = document.getElementById('transition-overlay');
+  if (appContainer && overlay) {
+    appContainer.classList.remove('cinematic');
+    void overlay.offsetWidth;
+    appContainer.classList.add('cinematic');
+    setTimeout(() => appContainer.classList.remove('cinematic'), 620);
+  }
+  if (screen) {
+    screen.classList.remove('cinematic-in');
+    void screen.offsetWidth;
+    screen.classList.add('cinematic-in');
+    setTimeout(() => screen.classList.remove('cinematic-in'), 600);
+  }
+}
+
+function showScreen(screenName) {
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+  const screen = document.getElementById('screen-' + screenName);
+  if (screen) screen.classList.add('active');
+  playCinematicTransition(screen);
+  const bottomNav = document.getElementById('bottom-nav');
+  if (!bottomNav) return;
+  if (screenName === 'intro') {
+    bottomNav.style.display = 'none';
+  } else {
+    bottomNav.style.display = 'flex';
+    setActiveNav(screenName);
+  }
+
+  // Some screens are lower in document flow; force viewport to the selected screen.
+  if (screen) {
+    requestAnimationFrame(() => {
+      const rect = screen.getBoundingClientRect();
+      const top = Math.max(0, window.scrollY + rect.top - 6);
+      window.scrollTo(0, top);
+    });
+  }
+}
+
+function normalizeLoadedState() {
+  if (!state.trainingSession) state.trainingSession = null;
+  if (!state.activeChallenge) state.activeChallenge = null;
+  if (!Array.isArray(state.missions)) state.missions = [];
+  
+  // MIGRATION: Force new missions if old 'log' type missions detected
+  if (state.missions.length > 0 && state.missions.some(m => m.kind === 'log')) {
+    state.missionDate = ''; // Force regeneration with new pool
+    state.missions = [];
+  }
+  
+  if (!Array.isArray(state.schedule) || !state.schedule.length) {
+    state.schedule = [...defaultSchedule];
+  } else {
+    const fmt = t => {
+      if (t === undefined || t === null) return null;
+      if (typeof t === 'number') {
+        const h = Math.floor(t/60) % 24;
+        const m = t % 60;
+        return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+      }
+      if (typeof t === 'string') return t;
+      return null;
+    };
+    state.schedule = state.schedule.map(item => ({
+      start: fmt(item.start) || fmt(item.time) || '07:00',
+      end: fmt(item.end) || fmt(item.start) || fmt(item.time) || '07:30',
+      name: item.name || 'Unnamed block',
+      type: item.type || 'General'
+    }));
+  }
+  if (!state.scheduleAlerts || typeof state.scheduleAlerts !== 'object') state.scheduleAlerts = {};
+  if (!state.introSeen) state.introSeen = false;
+  if (state.userName && !state.introSeen) state.introSeen = true;
+  if (!state.morningTrainingDate) state.morningTrainingDate = '';
+  if (!state.eveningResetDate) state.eveningResetDate = '';
+  if (state.trainingSession && !state.trainingSession.phase0Complete) {
+    state.trainingSession = null;
+    state.currentPhase = 0;
+    state.trainingActive = false;
+  }
+  if (state.activeChallenge) {
+    const activeMission = state.missions.find(mission => mission.id === state.activeChallenge.missionId);
+    if (!activeMission || activeMission.status !== 'active') {
+      state.activeChallenge = null;
+    }
+  }
+
+  // MIGRATION: weekly schedule support - if old single schedule exists, copy it across weekdays
+  if (!state.weeklySchedule || typeof state.weeklySchedule !== 'object') {
+    const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+    const base = Array.isArray(state.schedule) && state.schedule.length ? state.schedule : [...defaultSchedule];
+    state.weeklySchedule = {};
+    days.forEach(d => { state.weeklySchedule[d] = JSON.parse(JSON.stringify(base)); });
+  }
+
+  // Data integrity checks
+  if (typeof state.xp !== 'number' || state.xp < 0) state.xp = Math.max(0, Number(state.xp) || 0);
+  if (typeof state.vitality !== 'number' || state.vitality < 0 || state.vitality > 100) state.vitality = Math.min(100, Math.max(0, Number(state.vitality) || 75));
+  if (!Number.isInteger(state.streak)) state.streak = Math.max(0, Math.floor(state.streak) || 0);
+}
+
+function runDataIntegrityChecks() {
+  let repaired = false;
+  if (typeof state.xp !== 'number' || state.xp < 0 || isNaN(state.xp)) {
+    state.xp = Math.max(0, Number(state.xp) || 0); repaired = true;
+  }
+  if (typeof state.vitality !== 'number' || state.vitality < 0 || state.vitality > 100 || isNaN(state.vitality)) {
+    state.vitality = Math.min(100, Math.max(0, Number(state.vitality) || 75)); repaired = true;
+  }
+  if (!Number.isInteger(state.streak) || state.streak < 0) {
+    state.streak = Math.max(0, Math.floor(state.streak) || 0); repaired = true;
+  }
+  syncProgression(false);
+  let expectedRankIndex = 0;
+  for (let i = 0; i < ranks.length; i++) {
+    if (state.level >= ranks[i].min) expectedRankIndex = i;
+  }
+  if (state.rankIndex !== expectedRankIndex) {
+    state.rankIndex = expectedRankIndex; state.rank = ranks[expectedRankIndex].name; repaired = true;
+  }
+  if (state.rankIndex > state.highestRankIndex) { state.highestRankIndex = state.rankIndex; repaired = true; }
+  if (state.streak > state.longestStreak) { state.longestStreak = state.streak; repaired = true; }
+  if (!Array.isArray(state.vitalityHistory)) state.vitalityHistory = [];
+  if (!Array.isArray(state.xpHistory)) state.xpHistory = [];
+  if (!Array.isArray(state.streakHistory)) state.streakHistory = [];
+  if (!Array.isArray(state.eveningReflections)) state.eveningReflections = [];
+  if (!Array.isArray(state.achievementsEarned)) state.achievementsEarned = [];
+  if (repaired) { console.log('Data integrity checks repaired some values'); saveState(); }
+}
+
+function recordTimelineEvent(type, title, desc) {
+  if (!state.eveningReflections) state.eveningReflections = [];
+  // Use eveningReflections array to store timeline events too (migration-friendly)
+  state.eveningReflections.push({
+    date: getTodayKey(),
+    type: type,
+    title: title,
+    desc: desc,
+    timestamp: Date.now()
+  });
+  saveState();
+}
+
+function hydrateIntroAndSessionState() {
+  if (!state.introSeen || !state.userName) {
+    showScreen('intro');
+    const introBtnText = document.getElementById('intro-action-text');
+    if (introBtnText) introBtnText.textContent = 'Enter Training';
+    document.getElementById('intro-greeting').textContent = 'WELCOME';
+    return;
+  }
+  showScreen('dashboard');
+}
+
+function saveState() {
+  state.lastSavedAt = new Date().toISOString();
+  localStorage.setItem('tfw_state', JSON.stringify(state));
+  // persist today's missions separately (so progress isn't lost by accidental regeneration)
+  try {
+    if (state.missionDate) {
+      localStorage.setItem(`tfw_missions_${state.missionDate}`, JSON.stringify(state.missions || []));
+    }
+  } catch (e) {}
+  // If running inside the Android WebView, inform the native side about schedule changes
+  try {
+    if (window.AndroidBridge && typeof window.AndroidBridge.registerSchedule === 'function') {
+      // send weekly schedule if available, otherwise send today's schedule for compatibility
+      window.AndroidBridge.registerSchedule(JSON.stringify(state.weeklySchedule || state.schedule || []));
+    }
+    if (window.AndroidBridge && typeof window.AndroidBridge.registerDailyReminder === 'function') {
+      window.AndroidBridge.registerDailyReminder();
+    }
+  } catch (e) {
+    // ignore if not present
+  }
+}
+
+function getTodayKey() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function hashString(value) {
+  let hash = 0;
+  for (let index = 0; index < value.length; index++) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+  return hash;
+}
+
+function pickDailyMissions(seedText) {
+  const seed = hashString(seedText);
+  const pool = [...missionPool];
+  const chosen = [];
+  let workingSeed = seed;
+
+  for (let index = 0; index < 3; index++) {
+    const position = workingSeed % pool.length;
+    const template = pool.splice(position, 1)[0];
+    chosen.push(createMission(template, index + 1));
+    workingSeed = Math.floor(workingSeed / 7) + 13;
+  }
+
+  if (!chosen.some(mission => mission.kind === 'timed')) {
+    const timedTemplate = missionPool.find(mission => mission.kind === 'timed');
+    if (timedTemplate) chosen[chosen.length - 1] = createMission(timedTemplate, chosen.length);
+  }
+
+  return chosen;
+}
+
+function createMission(template, id) {
+  return {
+    id,
+    text: template.text,
+    xp: template.xp,
+    kind: template.kind,
+    target: template.target || 1,
+    progress: 0,
+    note: '',
+    verificationMethod: null,
+    lastProgressAt: null,
+    durationSec: template.durationSec || 0,
+    status: 'pending',
+    startedAt: null,
+    endAt: null,
+    completedAt: null
+  };
+}
+
+function hydrateDailyMissions() {
+  const today = getTodayKey();
+  // Load persisted mission progress per-day if present
+  const savedMissionsKey = `tfw_missions_${today}`;
+  const persisted = localStorage.getItem(savedMissionsKey);
+  if (persisted) {
+    try {
+      state.missions = JSON.parse(persisted);
+      state.missionDate = today;
+      updateMissionCount();
+      return;
+    } catch (e) { /* fallthrough to regenerate */ }
+  }
+
+  // Generate new daily missions and persist them
+  const seedText = `${today}:${state.userName || 'trainer'}`;
+  const missions = pickDailyMissions(seedText);
+  state.missionDate = today;
+  state.dailyMissionText = missions[0] ? missions[0].text : '';
+  state.missions = missions.map((m) => ({
+    id: m.id,
+    text: m.text,
+    xp: m.xp,
+    kind: m.kind,
+    target: m.target || 1,
+    progress: m.progress || 0,
+    note: m.note || '',
+    verificationMethod: m.verificationMethod || null,
+    lastProgressAt: m.lastProgressAt || null,
+    durationSec: m.durationSec,
+    status: m.status || 'pending',
+    startedAt: m.startedAt || null,
+    endAt: m.endAt || null,
+    completedAt: m.completedAt || null
+  }));
+  try { localStorage.setItem(savedMissionsKey, JSON.stringify(state.missions)); } catch(e) {}
+}
+
+function updateMissionCount() {
+  state.missionsCompleted = state.missions.reduce((count, mission) => count + (mission.status === 'completed' ? 1 : 0), 0);
+}
+
+function syncProgression(showRankChange) {
+  const previousRankIndex = state.rankIndex;
+
+  // XP curve: per-level XP increases with level (exponential growth)
+  function xpToGainForLevel(l) {
+    return Math.round(XP_BASE * Math.pow(XP_GROWTH, Math.max(0, l-1)));
+  }
+  function xpRequiredForLevel(l) {
+    // cumulative XP required to reach level `l` (level 1 requires 0)
+    let total = 0;
+    for (let i = 1; i < l; i++) total += xpToGainForLevel(i);
+    return total;
+  }
+
+  // Determine current level based on cumulative thresholds
+  let lvl = 1;
+  while (state.xp >= xpRequiredForLevel(lvl + 1)) lvl++;
+  state.level = Math.max(1, lvl);
+
+  // expose helper values
+  state.xpForCurrentLevel = xpRequiredForLevel(state.level);
+  state.xpToNextLevel = xpToGainForLevel(state.level);
+
+  // compute rank based on level
+  let nextRankIndex = 0;
+  for (let index = 0; index < ranks.length; index++) {
+    if (state.level >= ranks[index].min) nextRankIndex = index;
+  }
+  state.rankIndex = nextRankIndex;
+  state.rank = ranks[state.rankIndex].name;
+
+  updateMissionCount();
+  saveState();
+  refreshIdentityUI();
+
+  if (showRankChange && state.rankIndex > previousRankIndex) {
+    showRankUp(ranks[state.rankIndex]);
+    recordTimelineEvent('rank-up', `Reached ${ranks[state.rankIndex].name} Rank`, ranks[state.rankIndex].desc);
+  }
+  // Record history data points
+  const today = getTodayKey();
+  const todayEntry = state.vitalityHistory.find(h => h.date === today);
+  if (!todayEntry) {
+    state.vitalityHistory.push({date: today, value: state.vitality});
+    state.xpHistory.push({date: today, value: state.xp});
+    state.streakHistory.push({date: today, value: state.streak});
+    if (state.vitalityHistory.length > 90) state.vitalityHistory.shift();
+    if (state.xpHistory.length > 90) state.xpHistory.shift();
+    if (state.streakHistory.length > 90) state.streakHistory.shift();
+  }
+}
+
+function refreshIdentityUI() {
+  const identity = state.userName ? state.userName.toUpperCase() : 'AWAITING TRAINER NAME';
+  const greeting = state.userName ? `${getTimeGreeting()} ${state.userName}` : 'WELCOME, TRAINER';
+  document.getElementById('intro-user-name').textContent = identity;
+  document.getElementById('intro-greeting').textContent = state.userName ? getTimeGreeting() : 'WELCOME';
+  document.getElementById('dashboard-greeting').textContent = greeting;
+  document.getElementById('training-user-line').textContent = state.userName ? `For ${state.userName}` : 'For Trainer';
+  document.getElementById('evening-user-line').textContent = state.userName ? `For ${state.userName}` : 'For Trainer';
+  document.getElementById('schedule-user-line').textContent = state.userName ? `For ${state.userName}` : 'For Trainer';
+  document.getElementById('profile-user-line').textContent = state.userName ? `For ${state.userName}` : 'For Trainer';
+  const input = document.getElementById('trainer-name-input');
+  if (input && !input.value && state.userName) input.value = state.userName;
+}
+
+function getTimeGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 18) return 'Good Afternoon';
+  if (hour < 22) return 'Good Evening';
+  return 'Good Night';
+}
+
+function syncTimeBasedUI() {
+  refreshIdentityUI();
+}
+
+function showNameModalIfNeeded() {
+  const modal = document.getElementById('name-modal');
+  if (!modal) return;
+
+  if (!state.userName) {
+    console.log('[TFW] showNameModalIfNeeded: showing name modal');
+    // Force the modal to be visible with inline styles as backup
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'all';
+    modal.style.zIndex = '99999';
+    modal.classList.add('show');
+
+    // Ensure the input is focusable
+    const input = document.getElementById('trainer-name-input');
+    if (input) {
+      setTimeout(() => {
+        try { input.focus(); } catch(e) { console.warn('[TFW] focus failed', e); }
+        input.style.zIndex = '100000';
+        // enable user selection for the input in case global rule blocks it
+        input.style.userSelect = 'text';
+      }, 200);
+    } else {
+      console.warn('[TFW] trainer-name-input not found');
+    }
+  } else {
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+    modal.style.opacity = '';
+    modal.style.pointerEvents = '';
+    modal.style.zIndex = '';
+  }
+}
+
+function hideNameModal() {
+  const modal = document.getElementById('name-modal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  modal.style.display = 'none';
+  modal.style.opacity = '';
+  modal.style.pointerEvents = '';
+  modal.style.zIndex = '';
+}
+
+function restorePersistentInputs() {
+  const bodyScanInput = document.getElementById('body-scan-input');
+  const reflectLossInput = document.getElementById('reflect-loss');
+  const reflectCalmInput = document.getElementById('reflect-calm');
+  const reflectTriggerInput = document.getElementById('reflect-trigger');
+
+  if (bodyScanInput) bodyScanInput.value = state.bodyScan || '';
+  if (reflectLossInput) reflectLossInput.value = state.reflectionLoss || '';
+  if (reflectCalmInput) reflectCalmInput.value = state.reflectionCalm || '';
+  if (reflectTriggerInput) reflectTriggerInput.value = state.reflectionTrigger || '';
+
+  document.querySelectorAll('.emotion-btn').forEach(button => {
+    button.classList.toggle('selected', button.getAttribute('onclick')?.includes(`'${state.selectedEmotion}'`));
+  });
+  document.querySelectorAll('.intention-card').forEach(card => {
+    card.classList.toggle('selected', card.getAttribute('onclick')?.includes(`'${state.selectedIntention}'`));
+  });
+  document.querySelectorAll('#screen-evening .emotion-btn').forEach(button => {
+    button.classList.toggle('selected', button.getAttribute('onclick')?.includes(`'${state.selectedResponse}'`));
+  });
+}
+
+function bindPersistentInputs() {
+  const bodyScanInput = document.getElementById('body-scan-input');
+  const reflectLossInput = document.getElementById('reflect-loss');
+  const reflectCalmInput = document.getElementById('reflect-calm');
+  const reflectTriggerInput = document.getElementById('reflect-trigger');
+
+  if (bodyScanInput) {
+    bodyScanInput.addEventListener('input', event => {
+      state.bodyScan = event.target.value;
+      saveState();
+    });
+  }
+
+  if (reflectLossInput) {
+    reflectLossInput.addEventListener('input', event => {
+      state.reflectionLoss = event.target.value;
+      saveState();
+    });
+  }
+
+  if (reflectCalmInput) {
+    reflectCalmInput.addEventListener('input', event => {
+      state.reflectionCalm = event.target.value;
+      saveState();
+    });
+  }
+
+  if (reflectTriggerInput) {
+    reflectTriggerInput.addEventListener('input', event => {
+      state.reflectionTrigger = event.target.value;
+      saveState();
+    });
+  }
+}
+
+function openNameModal() {
+  const modal = document.getElementById('name-modal');
+  modal.style.display = 'flex';
+  document.getElementById('trainer-name-input').value = state.userName || '';
+  modal.classList.add('show');
+  document.getElementById('trainer-name-input').focus();
+}
+
+function fillSuggestedName(name) {
+  document.getElementById('trainer-name-input').value = name;
+}
+
+function confirmTrainerName() {
+  const input = document.getElementById('trainer-name-input');
+  const value = input.value.trim();
+  if (!value) {
+    input.focus();
+    return;
+  }
+
+  state.userName = value;
+  state.introSeen = true;
+  // Keep intro screen visible — only hide the name modal.
+  hydrateDailyMissions();
+  syncProgression(false);
+  refreshIdentityUI();
+  hideNameModal();
+  // Do not auto-enter the app; user must click Enter Training to proceed.
+  renderMissions();
+  updateDashboard();
+  saveState();
+}
+
+function exportSave() {
+  syncProgression(false);
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'save.json';
+  link.click();
+  URL.revokeObjectURL(url);
+  showToast('Save exported as save.json');
+}
+
+function importSave(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      Object.assign(state, JSON.parse(reader.result));
+      normalizeLoadedState();
+      hydrateIntroAndSessionState();
+      hydrateDailyMissions();
+      syncProgression(false);
+      renderMissions();
+      updateDashboard();
+      updateProfile();
+      refreshIdentityUI();
+      syncTrainingUI();
+      syncActiveChallengeUI();
+      showToast('Save imported');
+      showNameModalIfNeeded();
+    } catch (error) {
+      showToast('Invalid save file');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ===== NAVIGATION =====
+function showPhilosophy() {
+  // Show intro screen as philosophy view
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-intro').classList.add('active');
+  document.getElementById('bottom-nav').style.display = 'none';
+
+  // Update button to say BACK
+  const btnText = document.getElementById('intro-action-text');
+  if (btnText) btnText.textContent = 'BACK';
+
+  // Update greeting to show philosophy context
+  const greeting = document.getElementById('intro-greeting');
+  if (greeting) greeting.textContent = 'PHILOSOPHY';
+}
+
+function enterApp() {
+  // Check if we're in philosophy mode (no bottom nav visible)
+  const bottomNav = document.getElementById('bottom-nav');
+  if (bottomNav && bottomNav.style.display === 'none' && state.userName) {
+    // We're in philosophy mode, go back to profile
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-profile').classList.add('active');
+    bottomNav.style.display = 'flex';
+    // Reset button text for next time
+    const btnText = document.getElementById('intro-action-text');
+    if (btnText) btnText.textContent = 'Enter Training';
+    return;
+  }
+
+  // Normal flow
+  if (!state.userName) {
+    showNameModalIfNeeded();
+    return;
+  }
+  state.introSeen = true;
+  showScreen('dashboard');
+  const btnText = document.getElementById('intro-action-text');
+  if (btnText) btnText.textContent = 'Enter Training';
+  saveState();
+  updateDashboard();
+}
+
+function navigateTo(screenName) {
+  if (screenName === 'training' && isMorningTrainingLocked()) {
+    showToast('Morning training is locked for today. Next reset at midnight.');
+    showScreen('dashboard');
+    updateDashboard();
+    return;
+  }
+  showScreen(screenName);
+  if(screenName==='dashboard') updateDashboard();
+  if(screenName==='profile') updateProfile();
+  if(screenName==='schedule') renderSchedule();
+  if(screenName==='emotion-log') { renderEmotionLog(); setTimeout(fixEmotionLogHeight, 100); }
+  if(screenName==='training') {
+    // Always open the training tab in a clean state so the user must tap Start.
+    stopBreathingTimer();
+    state.trainingSession = null;
+    state.trainingActive = false;
+    state.currentPhase = 0;
+    saveState();
+    showPhase(0);
+    syncTrainingUI();
+  }
+}
+
+// ===== DASHBOARD =====
+function updateDashboard() {
+  const rank = ranks[state.rankIndex];
+  document.getElementById('rank-name').textContent = rank.name.toUpperCase();
+  document.getElementById('rank-icon').textContent = rank.icon;
+  document.getElementById('user-level').textContent = state.level;
+  document.getElementById('stat-xp').textContent = state.xp;
+  document.getElementById('stat-streak').textContent = state.streak;
+  document.getElementById('daily-mission-text').textContent = state.dailyMissionText || 'Pause before your first reaction and choose a conscious response.';
+
+  // Vitality ring
+  document.getElementById('vitality-value').textContent = state.vitality;
+  const ring = document.getElementById('vitality-ring');
+  const circumference = 440;
+  const offset = circumference - (state.vitality/100)*circumference;
+  ring.style.strokeDashoffset = offset;
+
+  const vitState = vitalityStates.find(s=>state.vitality>=s.threshold) || vitalityStates[vitalityStates.length-1];
+  document.getElementById('vitality-state').textContent = vitState.name;
+  document.getElementById('vitality-state').style.borderColor = vitState.color;
+  document.getElementById('vitality-state').style.color = vitState.color;
+  document.getElementById('vitality-state').style.background = vitState.color+'1a';
+  ring.style.stroke = vitState.color;
+  document.getElementById('vitality-value').style.color = vitState.color;
+
+  // Progress: show XP progress within current 100-XP tier (0-99 -> 0-99%)
+  let progress = 0;
+  try {
+    const xpBase = typeof state.xpForCurrentLevel === 'number' ? state.xpForCurrentLevel : 0;
+    const xpNeeded = typeof state.xpToNextLevel === 'number' && state.xpToNextLevel > 0 ? state.xpToNextLevel : 100;
+    const xpWithin = Math.max(0, state.xp - xpBase);
+    progress = Math.min(100, Math.max(0, (xpWithin / xpNeeded) * 100));
+  } catch (e) { progress = 0; }
+  document.getElementById('progress-fill').style.width = progress+'%';
+  const remainingXP = Math.max(0, Math.round((typeof state.xpToNextLevel === 'number' ? state.xpToNextLevel : 100) - (state.xp - (typeof state.xpForCurrentLevel === 'number' ? state.xpForCurrentLevel : 0))));
+  document.getElementById('progress-text').textContent = Math.round(progress) + '% • ' + remainingXP + ' XP';
+
+  // State indicator
+  const stateColors = {calm:'#00d4ff',focused:'#9d4edd',neutral:'#8a8ab5',stressed:'#ff6b35',chaotic:'#ff2a6d'};
+  let currentState = 'calm';
+  if(state.vitality<30) currentState='chaotic';
+  else if(state.vitality<50) currentState='stressed';
+  else if(state.vitality>80) currentState='focused';
+  document.getElementById('state-indicator').style.background = stateColors[currentState];
+  document.getElementById('state-indicator').style.boxShadow = '0 0 15px '+stateColors[currentState];
+  document.getElementById('state-name').textContent = currentState.toUpperCase();
+  document.getElementById('state-name').style.color = stateColors[currentState];
+
+  const today = getTodayKey();
+  const trainingButtonWrapper = document.querySelector('#screen-dashboard .btn.btn-primary.mt-20');
+  const trainingButtonSpan = trainingButtonWrapper ? trainingButtonWrapper.querySelector('span') : null;
+  if (trainingButtonWrapper && trainingButtonSpan) {
+    const isLocked = state.morningTrainingDate === today;
+    trainingButtonSpan.textContent = isLocked ? 'Morning Training Locked (Tomorrow)' : 'Start Morning Training';
+    trainingButtonWrapper.disabled = isLocked;
+    trainingButtonWrapper.style.opacity = isLocked ? '0.4' : '1';
+    trainingButtonWrapper.style.cursor = isLocked ? 'not-allowed' : 'pointer';
+  }
+  const eveningButton = document.querySelector('#screen-evening .btn.btn-primary.mt-20');
+  if (eveningButton) {
+    const isEveningLocked = state.eveningResetDate === today;
+    eveningButton.textContent = isEveningLocked ? 'Evening Reset Locked (Tomorrow)' : 'Complete Reset';
+    eveningButton.disabled = isEveningLocked;
+    eveningButton.style.opacity = isEveningLocked ? '0.4' : '1';
+    eveningButton.style.cursor = isEveningLocked ? 'not-allowed' : 'pointer';
+  }
+
+  syncActiveChallengeUI();
+  syncTrainingUI();
+}
+
+function renderMissions() {
+  const list = document.getElementById('missions-list');
+  list.innerHTML = '';
+  let totalXP = 0;
+  state.missions.forEach(mission=>{
+    if(mission.status !== 'completed') totalXP += mission.xp;
+    const item = document.createElement('div');
+    item.className = 'mission-item' + (mission.status==='completed'?' completed':'') + (mission.status==='active'?' active':'') + (mission.kind==='timed'?' timed':'');
+    item.onclick = ()=>handleMissionAction(mission.id);
+    const badge = mission.kind === 'timed' ? 'Timed ' + formatDuration(mission.durationSec) : mission.kind === 'counter' ? mission.progress + '/' + mission.target : 'Log Once';
+    const statusLabel = mission.status === 'completed' ? 'Done' : mission.status === 'active' ? 'Running' : 'Ready';
+    const timerMarkup = mission.status === 'active' ? '<div class="mission-timer" data-mission-timer="'+mission.id+'">'+formatDuration(getMissionRemaining(mission))+'</div>' : '<div class="mission-badge '+(mission.kind==='timed'?'timed':'')+'">'+badge+'</div>';
+    const actionMarkup = renderMissionActions(mission);
+    const verifyMarkup = mission.verificationMethod === 'training-verified' ? '<span style="color:var(--success);font-size:11px;font-weight:600">✓ Verified</span>' : mission.verificationMethod === 'user-logged' ? '<span style="color:var(--warn);font-size:11px;font-weight:600">⊕ Logged</span>' : '';
+    const noteMarkup = mission.note ? '<div style="width:100%;font-size:12px;color:var(--text-secondary);margin-top:6px">'+mission.note + ' ' + verifyMarkup + '</div>' : '';
+    item.innerHTML = '<div class="mission-check"></div><div class="mission-text">'+mission.text+'</div><div class="mission-meta">'+timerMarkup+'<div class="mission-badge '+(mission.status==='completed'?'done':'')+'">'+statusLabel+'</div></div>'+actionMarkup+noteMarkup;
+    list.appendChild(item);
+  });
+  document.getElementById('mission-total-xp').textContent = totalXP;
+  decoratePremiumButtons(list);
+}
+
+function renderSchedule() {
+  const list = document.getElementById('schedule-list');
+  if (!list) return;
+  list.innerHTML = '';
+  // render for selected weekday
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const items = (state.weeklySchedule && state.weeklySchedule[day]) ? state.weeklySchedule[day] : state.schedule;
+
+  // render weekday selector
+  renderWeekdaySelector();
+
+  items.forEach((item, index) => {
+    const row = document.createElement('div');
+    row.className = 'schedule-item';
+    row.draggable = true;
+    row.dataset.index = index;
+    row.addEventListener('dragstart', event => setScheduleDragIndex(index, event.currentTarget));
+    row.addEventListener('dragover', allowScheduleDrop);
+    row.addEventListener('drop', event => dropScheduleItem(index, event.currentTarget, event));
+    row.addEventListener('dragend', clearScheduleDragIndex);
+    row.innerHTML = '<div class="schedule-time">'+item.start+' - '+item.end+'</div><div class="schedule-name">'+item.name+'</div><div class="schedule-type">'+item.type+'</div><div class="schedule-row-actions"><button class="btn has-icon" data-icon="↑" onclick="moveScheduleItem('+index+', -1)"><span class="btn-label">Up</span></button><button class="btn has-icon" data-icon="↓" onclick="moveScheduleItem('+index+', 1)"><span class="btn-label">Down</span></button><button class="btn btn-blue has-icon" data-icon="✎" onclick="editScheduleItem('+index+')"><span class="btn-label">Edit</span></button><button class="btn btn-amber has-icon" data-icon="×" onclick="removeScheduleItem('+index+')"><span class="btn-label">Remove</span></button></div>';
+    list.appendChild(row);
+  });
+  decoratePremiumButtons(list);
+}
+
+function renderWeekdaySelector() {
+  const container = document.getElementById('weekday-selector');
+  if (!container) return;
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  container.innerHTML = '';
+  days.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.style.padding = '6px 8px';
+    btn.style.minWidth = '40px';
+    btn.textContent = d.slice(0,3).toUpperCase();
+    if (state.selectedScheduleDay === d) btn.classList.add('btn-primary');
+    btn.onclick = () => { state.selectedScheduleDay = d; saveState(); renderSchedule(); };
+    container.appendChild(btn);
+  });
+}
+
+function addScheduleItem() {
+  const startInput = document.getElementById('schedule-start-input');
+  const endInput = document.getElementById('schedule-end-input');
+  const nameInput = document.getElementById('schedule-name-input');
+  const typeInput = document.getElementById('schedule-type-input');
+  const start = startInput.value.trim();
+  const end = endInput.value.trim();
+  const name = nameInput.value.trim();
+  const type = typeInput.value.trim();
+
+  if (!start || !end || !name || !type) {
+    showToast('Fill all schedule fields');
+    return;
+  }
+
+  if (end <= start) {
+    showToast('End time must be after start');
+    return;
+  }
+
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  if (!state.weeklySchedule) state.weeklySchedule = {};
+  if (!Array.isArray(state.weeklySchedule[day])) state.weeklySchedule[day] = [];
+
+  const editingIdx = (typeof window !== 'undefined' && window.currentEditingScheduleIdx !== undefined) ? window.currentEditingScheduleIdx : state.editingScheduleIdx;
+  if (editingIdx !== null && editingIdx !== undefined) {
+    const idx = editingIdx;
+    if (idx >= 0 && idx < state.weeklySchedule[day].length) {
+      state.weeklySchedule[day][idx] = {start, end, name, type};
+      state.editingScheduleIdx = null;
+      try { window.currentEditingScheduleIdx = null; } catch (e) {}
+      showToast('Schedule item updated');
+    }
+  } else {
+    state.weeklySchedule[day].push({start, end, name, type});
+    showToast('Schedule item saved locally');
+  }
+  saveState();
+  renderSchedule();
+  nameInput.value = '';
+  typeInput.value = '';
+}
+
+function moveScheduleItem(index, direction) {
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const items = (state.weeklySchedule && state.weeklySchedule[day]) ? [...state.weeklySchedule[day]] : [...state.schedule];
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= items.length) return;
+  const [item] = items.splice(index, 1);
+  items.splice(targetIndex, 0, item);
+  if (state.weeklySchedule && state.weeklySchedule[day]) state.weeklySchedule[day] = items; else state.schedule = items;
+  saveState();
+  renderSchedule();
+}
+
+function removeScheduleItem(index) {
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  if (state.weeklySchedule && Array.isArray(state.weeklySchedule[day])) {
+    state.weeklySchedule[day].splice(index, 1);
+    if (!state.weeklySchedule[day].length) state.weeklySchedule[day] = [...defaultSchedule];
+  } else {
+    state.schedule.splice(index, 1);
+    if (!state.schedule.length) state.schedule = [...defaultSchedule];
+  }
+  saveState();
+  renderSchedule();
+  showToast('Schedule updated');
+}
+
+function editScheduleItem(index) {
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const list = (state.weeklySchedule && state.weeklySchedule[day]) ? state.weeklySchedule[day] : state.schedule;
+  const item = list[index];
+  // Fill the edit form with current values (expecting 'HH:MM' strings)
+  const parseTime = (t) => {
+    if (!t || typeof t !== 'string') return {h:0,m:0};
+    const parts = t.split(':');
+    const h = parseInt(parts[0]) || 0;
+    const m = parseInt(parts[1]) || 0;
+    return {h,m};
+  };
+  const s = parseTime(item.start);
+  const e = parseTime(item.end);
+
+  const startInput = document.getElementById('schedule-start-input');
+  const endInput = document.getElementById('schedule-end-input');
+  const nameInput = document.getElementById('schedule-name-input');
+  const typeInput = document.getElementById('schedule-type-input');
+
+  if (startInput) startInput.value = String(s.h).padStart(2,'0') + ':' + String(s.m).padStart(2,'0');
+  if (endInput) endInput.value = String(e.h).padStart(2,'0') + ':' + String(e.m).padStart(2,'0');
+  if (nameInput) nameInput.value = item?.name || '';
+  if (typeInput) typeInput.value = item?.type || '';
+
+  state.editingScheduleIdx = index;
+  state.selectedScheduleDay = day;
+  try { window.currentEditingScheduleIdx = index; } catch (e) {}
+  saveState();
+
+  // Scroll to edit form
+  const form = document.querySelector('.schedule-form');
+  if (form) form.scrollIntoView({behavior:'smooth'});
+}
+
+function saveScheduleItem() {
+  const startInput = document.getElementById('schedule-start-input');
+  const endInput = document.getElementById('schedule-end-input');
+  const nameInput = document.getElementById('schedule-name-input');
+  const typeInput = document.getElementById('schedule-type-input');
+  
+  if (!startInput || !endInput || !nameInput || !typeInput) return;
+  
+  const startStr = startInput.value;
+  const endStr = endInput.value;
+  const name = nameInput.value;
+  const type = typeInput.value;
+  
+  if (!startStr || !endStr || !name || !type) {
+    showToast('Fill all fields');
+    return;
+  }
+  
+  const [sh, sm] = startStr.split(':').map(x => parseInt(x));
+  const [eh, em] = endStr.split(':').map(x => parseInt(x));
+  
+  if (isNaN(sh) || isNaN(sm) || isNaN(eh) || isNaN(em) || sh < 0 || sh > 23 || sm < 0 || sm > 59 || eh < 0 || eh > 23 || em < 0 || em > 59) {
+    showToast('Valid time format: HH:MM (00:00-23:59)');
+    return;
+  }
+  
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const list = (state.weeklySchedule && state.weeklySchedule[day]) ? state.weeklySchedule[day] : state.schedule;
+  const idx = state.editingScheduleIdx;
+  if (idx !== null && idx !== undefined && idx >= 0 && idx < list.length) {
+    // Save as 'HH:MM' strings to match defaultSchedule
+    list[idx].start = String(sh).padStart(2,'0') + ':' + String(sm).padStart(2,'0');
+    list[idx].end = String(eh).padStart(2,'0') + ':' + String(em).padStart(2,'0');
+    list[idx].name = name;
+    list[idx].type = type;
+  }
+  
+  state.editingScheduleIdx = null;
+  startInput.value = '';
+  endInput.value = '';
+  nameInput.value = '';
+  typeInput.value = '';
+  saveState();
+  renderSchedule();
+  showToast('Schedule item updated');
+}
+
+function exportScheduleSummary() {
+  const day = state.selectedScheduleDay || (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const items = (state.weeklySchedule && state.weeklySchedule[day]) ? state.weeklySchedule[day] : state.schedule;
+  const summary = items.map(item => `${item.start} - ${item.end} | ${item.name} (${item.type})`).join('\n');
+  const blob = new Blob([summary], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'schedule.txt';
+  link.click();
+  URL.revokeObjectURL(url);
+  showToast('Schedule exported');
+}
+
+let scheduleDragIndex = null;
+
+function setScheduleDragIndex(index, element) {
+  scheduleDragIndex = index;
+  if (element) element.classList.add('dragging');
+}
+
+function allowScheduleDrop(event) {
+  event.preventDefault();
+}
+
+function dropScheduleItem(dropIndex, element, event) {
+  if (event) event.preventDefault();
+  if (scheduleDragIndex === null || scheduleDragIndex === dropIndex) return;
+  // For weekday lists, use moveScheduleItem which handles selected day
+  moveScheduleItem(scheduleDragIndex, dropIndex - scheduleDragIndex);
+  clearScheduleDragIndex();
+  if (element) element.classList.remove('dragging');
+}
+
+function clearScheduleDragIndex() {
+  scheduleDragIndex = null;
+  document.querySelectorAll('.schedule-item.dragging').forEach(item => item.classList.remove('dragging'));
+}
+
+function enableScheduleNotifications() {
+  if (!('Notification' in window)) {
+    showToast('Notifications not supported');
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        state.remindersEnabled = true;
+        showToast('Schedule reminders enabled');
+        new Notification('The Force Within', {body:'Schedule reminders are enabled on this device.'});
+      } else {
+        state.remindersEnabled = false;
+        showToast('Reminders not enabled');
+      }
+  });
+}
+
+function checkScheduleNotifications() {
+  const currentTime = new Date().toTimeString().slice(0,5);
+  const today = getTodayKey();
+  if (!state.scheduleAlerts[today]) state.scheduleAlerts[today] = [];
+  // Determine today's schedule from weeklySchedule if present
+  const day = (['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()]);
+  const todays = (state.weeklySchedule && state.weeklySchedule[day]) ? state.weeklySchedule[day] : state.schedule;
+  todays.forEach(item => {
+    if (item.start !== currentTime && item.end !== currentTime) return;
+    const key = `${item.start}|${item.end}|${item.name}`;
+    if (state.scheduleAlerts[today].includes(key)) return;
+
+    state.scheduleAlerts[today].push(key);
+    saveState();
+    showToast((item.start === currentTime ? 'Start' : 'End') + ': ' + item.name);
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('The Force Within', {body: item.name + ' - ' + item.type});
+    }
+  });
+}
+
+function abortActiveChallenge() {
+  if (!state.activeChallenge) return;
+  abortMission(state.activeChallenge.missionId);
+}
+
+function finishActiveChallenge() {
+  if (!state.activeChallenge) return;
+  const mission = state.missions.find(item => item.id === state.activeChallenge.missionId);
+  if (!mission) return;
+  if (getMissionRemaining(mission) > 0) {
+    showToast('Stay until the timer completes');
+    return;
+  }
+  completeTimedMission(mission.id);
+}
+
+function renderMissionActions(mission) {
+  if (mission.status === 'completed') {
+    return '<div class="mission-actions"><button class="btn has-icon" data-icon="✓" disabled><span class="btn-label">Completed</span></button></div>';
+  }
+
+  if (mission.status === 'active') {
+    return '<div class="mission-actions"><button class="btn btn-amber has-icon" data-icon="⟡" onclick="event.stopPropagation();abortMission('+mission.id+')"><span class="btn-label">End Early</span></button><button class="btn has-icon" data-icon="✦" onclick="event.stopPropagation();focusActiveMission('+mission.id+')"><span class="btn-label">Keep Going</span></button></div>';
+  }
+
+  if (mission.kind === 'timed') {
+    return '<div class="mission-actions"><button class="btn btn-primary has-icon" data-icon="⏱" onclick="event.stopPropagation();startMissionTimer('+mission.id+')"><span class="btn-label">Start Timer</span></button></div>';
+  }
+
+  if (mission.kind === 'counter') {
+    return '<div class="mission-actions"><button class="btn btn-primary has-icon" data-icon="✓" onclick="event.stopPropagation();recordMissionProgress('+mission.id+')"><span class="btn-label">Log Check-in</span></button></div>';
+  }
+
+  return '<div class="mission-actions"><button class="btn btn-primary has-icon" data-icon="✎" onclick="event.stopPropagation();openMissionLog('+mission.id+')"><span class="btn-label">Log Completion</span></button></div>';
+}
+
+function handleMissionAction(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if (!mission || mission.status === 'completed') return;
+  if (mission.kind === 'timed') startMissionTimer(id);
+  else if (mission.kind === 'counter') recordMissionProgress(id);
+  else openMissionLog(id);
+}
+
+function completeInstantMission(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if(!mission) return;
+  if (mission.status === 'completed') return;
+  mission.status = 'completed';
+  mission.completedAt = Date.now();
+  addXP(scaleReward(mission.xp));
+  state.vitality = Math.min(100, state.vitality+5);
+  state.selectedMissionId = null;
+  syncProgression(true);
+  // persist per-day missions
+  try { if (state.missionDate) localStorage.setItem(`tfw_missions_${state.missionDate}`, JSON.stringify(state.missions)); } catch(e) {}
+  saveState();
+  renderMissions();
+  updateDashboard();
+}
+
+function scaleReward(baseXP) {
+  return Math.max(1, Math.round(baseXP + (state.level * 0.5)));
+}
+
+function openMissionLog(id) {
+  const mission = state.missions.find(item => item.id === id);
+  if (!mission || mission.status === 'completed') return;
+  
+  const note = prompt(`How did you complete: "${mission.text}"\n\nBe specific (at least 15 characters):`);
+  if (note === null) return;
+  
+  if (note.trim().length < 15) {
+    showToast('Please provide more detail (at least 15 characters)');
+    return;
+  }
+  
+  // Verify action keywords present
+  const actionKeywords = ['completed', 'did', 'practiced', 'performed', 'noticed', 'paused', 'aware', 'control', 'calm', 'focused', 'observed', 'reaction', 'breath', 'silent', 'walked', 'moment', 'step', 'action'];
+  const hasAction = actionKeywords.some(kw => note.toLowerCase().includes(kw));
+  
+  if (!hasAction) {
+    showToast('Describe the specific action you took today');
+    return;
+  }
+  
+  mission.note = note.trim();
+  mission.loggedAt = Date.now();
+  mission.verificationMethod = 'user-logged';
+  completeInstantMission(id);
+}
+
+function recordMissionProgress(id) {
+  const mission = state.missions.find(item => item.id === id);
+  if (!mission || mission.status === 'completed') return;
+  if (mission.lastProgressAt && (Date.now() - mission.lastProgressAt) < 60000) {
+    showToast('Wait at least 1 minute before next check-in');
+    return;
+  }
+  mission.lastProgressAt = Date.now();
+  mission.progress = Math.min(mission.target || 1, (mission.progress || 0) + 1);
+  if (mission.progress >= (mission.target || 1)) {
+    if (mission.status !== 'completed') {
+      mission.status = 'completed';
+      mission.completedAt = Date.now();
+      addXP(scaleReward(mission.xp));
+      state.vitality = Math.min(100, state.vitality+5);
+      syncProgression(true);
+    }
+  } else {
+    showToast(`Check-in logged ${mission.progress}/${mission.target}`);
+    // save intermediate progress
+    try { if (state.missionDate) localStorage.setItem(`tfw_missions_${state.missionDate}`, JSON.stringify(state.missions)); } catch(e) {}
+    saveState();
+  }
+  // always persist final state for the day
+  try { if (state.missionDate) localStorage.setItem(`tfw_missions_${state.missionDate}`, JSON.stringify(state.missions)); } catch(e) {}
+  saveState();
+  renderMissions();
+  updateDashboard();
+}
+
+function startMissionTimer(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if(!mission || mission.status === 'completed') return;
+  if (state.activeChallenge) {
+    showToast('Finish the active challenge first');
+    return;
+  }
+  const durationSec = mission.durationSec || 300;
+  const now = Date.now();
+  mission.status = 'active';
+  mission.startedAt = now;
+  mission.endAt = now + (durationSec * 1000);
+  state.activeChallenge = {type:'mission', missionId: id};
+  saveState();
+  renderMissions();
+  syncActiveChallengeUI();
+  showToast('Timer started');
+}
+
+function abortMission(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if(!mission || mission.status !== 'active') return;
+  mission.status = 'aborted';
+  mission.startedAt = null;
+  mission.endAt = null;
+  state.activeChallenge = null;
+  saveState();
+  renderMissions();
+  syncActiveChallengeUI();
+  showToast('No XP earned');
+}
+
+function completeTimedMission(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if(!mission || mission.status !== 'active') return;
+  if (mission.status !== 'completed') {
+    mission.status = 'completed';
+    mission.completedAt = Date.now();
+    state.activeChallenge = null;
+    addXP(scaleReward(mission.xp));
+    state.vitality = Math.min(100, state.vitality+5);
+    syncProgression(true);
+    // persist per-day missions
+    try { if (state.missionDate) localStorage.setItem(`tfw_missions_${state.missionDate}`, JSON.stringify(state.missions)); } catch(e) {}
+    saveState();
+    renderMissions();
+    syncActiveChallengeUI();
+    updateDashboard();
+    showToast('Challenge complete');
+  }
+}
+
+function focusActiveMission(id) {
+  const mission = state.missions.find(m=>m.id===id);
+  if (!mission) return;
+  document.getElementById('screen-dashboard').classList.add('active');
+  document.getElementById('screen-training').classList.remove('active');
+  document.getElementById('screen-evening').classList.remove('active');
+  document.getElementById('screen-schedule').classList.remove('active');
+  document.getElementById('screen-profile').classList.remove('active');
+  syncActiveChallengeUI();
+}
+
+function getMissionRemaining(mission) {
+  if (!mission || mission.status !== 'active' || !mission.endAt) return 0;
+  return Math.max(0, Math.ceil((mission.endAt - Date.now()) / 1000));
+}
+
+function formatDuration(seconds) {
+  const safe = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(safe / 60).toString().padStart(2,'0');
+  const remainder = (safe % 60).toString().padStart(2,'0');
+  return minutes + ':' + remainder;
+}
+
+function syncActiveChallengeUI() {
+  const panel = document.getElementById('challenge-panel');
+  const timerText = document.getElementById('challenge-panel-timer');
+  const title = document.getElementById('challenge-panel-title');
+  const body = document.getElementById('challenge-panel-text');
+  const abortButton = document.getElementById('challenge-panel-abort');
+  const finishButton = document.getElementById('challenge-panel-finish');
+  if (!panel || !timerText || !title || !body || !abortButton || !finishButton) return;
+
+  const activeMission = state.activeChallenge ? state.missions.find(m => m.id === state.activeChallenge.missionId) : null;
+  if (!activeMission) {
+    panel.classList.remove('show');
+    return;
+  }
+
+  panel.classList.add('show');
+  title.textContent = 'Active Mission';
+  body.textContent = activeMission.text;
+  timerText.textContent = formatDuration(getMissionRemaining(activeMission));
+  abortButton.onclick = () => abortMission(activeMission.id);
+  finishButton.textContent = 'Complete';
+  finishButton.disabled = false;
+  finishButton.onclick = () => {
+    if (getMissionRemaining(activeMission) > 0) {
+      showToast('Keep going until the timer completes');
+      return;
+    }
+    completeTimedMission(activeMission.id);
+  };
+}
+
+function tickTimedSystems() {
+  if (state.activeChallenge) {
+    const mission = state.missions.find(m => m.id === state.activeChallenge.missionId);
+    if (mission && mission.status === 'active') {
+      const remaining = getMissionRemaining(mission);
+      const timerNode = document.querySelector('[data-mission-timer="'+mission.id+'"]');
+      if (timerNode) timerNode.textContent = formatDuration(remaining);
+      const panelTimer = document.getElementById('challenge-panel-timer');
+      if (panelTimer) panelTimer.textContent = formatDuration(remaining);
+      if (remaining <= 0) {
+        completeTimedMission(mission.id);
+        return;
+      }
+    }
+  }
+
+  checkScheduleNotifications();
+
+  if (state.trainingSession && state.trainingSession.endAt && !state.trainingSession.phase0Complete) {
+    const remaining = Math.max(0, Math.ceil((state.trainingSession.endAt - Date.now()) / 1000));
+    document.getElementById('breath-timer').textContent = formatDuration(remaining);
+    document.getElementById('breath-inner').textContent = remaining > 0 ? remaining : 'DONE';
+    if (remaining <= 0) {
+      state.trainingSession.phase0Complete = true;
+      state.trainingSession.rewardEligible = true;
+      state.trainingSession.aborted = false;
+      stopBreathingTimer();
+      saveState();
+      syncTrainingUI();
+      showToast('Phase complete. Continue when ready.');
+    }
+  }
+}
+
+// ===== TRAINING =====
+function isMorningTrainingLocked() {
+  return state.morningTrainingDate === getTodayKey();
+}
+
+function startTraining() {
+  if (isMorningTrainingLocked()) {
+    showToast('Morning training already completed today. Reset at midnight.');
+    return;
+  }
+  if (!state.userName) {
+    showToast('Please enter your name first');
+    return;
+  }
+  // Enter the training screen first; the actual session starts when the user taps Start.
+  state.activeChallenge = null;
+  state.currentPhase = 0;
+  state.trainingActive = false;
+  state.trainingSession = null;
+  saveState();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-training').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  setTimeout(() => showPhase(0), 100);
+}
+
+function handleTrainingPrimaryAction() {
+  if (isMorningTrainingLocked() && !state.trainingSession) {
+    showToast('Morning training already completed today. Come back tomorrow.');
+    showScreen('dashboard');
+    updateDashboard();
+    return;
+  }
+  if (state.currentPhase === 0) {
+    if (!state.trainingSession) {
+      state.trainingActive = true;
+      state.trainingSession = {
+        startedDate: getTodayKey(),
+        startedAt: Date.now(),
+        endAt: null,
+        phase0Complete: false,
+        rewardEligible: false,
+        aborted: false
+      };
+      saveState();
+      startBreathingTimer();
+      showToast('Timer started');
+      return;
+    }
+    if (!state.trainingSession.phase0Complete) {
+      showToast('Stay until the timer completes or end early');
+      return;
+    }
+  }
+  nextPhase();
+}
+
+function showPhase(phase) {
+  document.getElementById('phase-breath').classList.add('hidden');
+  document.getElementById('phase-awareness').classList.add('hidden');
+  document.getElementById('phase-intention').classList.add('hidden');
+  const startButton = document.getElementById('training-start-button');
+  const continueButton = document.getElementById('btn-next');
+
+  if(phase===0) {
+    document.getElementById('phase-breath').classList.remove('hidden');
+    document.getElementById('training-phase').textContent = 'Phase 1 of 3: Centering Breath';
+    resetBreathDisplay();
+    if (startButton) startButton.classList.remove('hidden');
+    if (continueButton) continueButton.classList.add('hidden');
+  } else if(phase===1) {
+    document.getElementById('phase-awareness').classList.remove('hidden');
+    document.getElementById('training-phase').textContent = 'Phase 2 of 3: Awareness Scan';
+    if (startButton) startButton.classList.add('hidden');
+    if (continueButton) {
+      continueButton.classList.remove('hidden');
+      continueButton.textContent = 'Continue to Intention';
+    }
+  } else if(phase===2) {
+    document.getElementById('phase-intention').classList.remove('hidden');
+    document.getElementById('training-phase').textContent = 'Phase 3 of 3: Intention Setting';
+    if (startButton) startButton.classList.add('hidden');
+    if (continueButton) {
+      continueButton.classList.remove('hidden');
+      continueButton.textContent = 'Complete Training';
+    }
+  }
+}
+
+function nextPhase() {
+  if (state.currentPhase === 0 && (!state.trainingSession || !state.trainingSession.phase0Complete)) {
+    showToast('Stay until the timer completes or end early');
+    return;
+  }
+  if(state.currentPhase<2) { state.currentPhase++; showPhase(state.currentPhase); }
+  else completeTraining();
+}
+
+function prevPhase() {
+  if(state.currentPhase>0) { state.currentPhase--; showPhase(state.currentPhase); }
+}
+
+let breathTimer = null;
+
+function resetBreathDisplay() {
+  const breathTimerNode = document.getElementById('breath-timer');
+  const breathInnerNode = document.getElementById('breath-inner');
+  const breathInstructionNode = document.getElementById('breath-instruction');
+  if (breathTimerNode) breathTimerNode.textContent = '05:00';
+  if (breathInnerNode) breathInnerNode.textContent = '4';
+  if (breathInstructionNode) breathInstructionNode.textContent = 'INHALE';
+}
+
+function startBreathingTimer() {
+  if (!state.trainingSession) return;
+  stopBreathingTimer();
+  if (!state.trainingSession.startedAt || !state.trainingSession.endAt) {
+    state.trainingSession.startedAt = Date.now();
+    state.trainingSession.endAt = Date.now() + (5 * 60 * 1000);
+    saveState();
+  }
+  const breathPhases = [{text:'INHALE',duration:4},{text:'HOLD',duration:4},{text:'EXHALE',duration:6}];
+  let breathPhase = 0;
+  let breathTime = 0;
+  const btnNext = document.getElementById('btn-next');
+  const startButton = document.getElementById('training-start-button');
+
+  function update() {
+    const remaining = Math.max(0, Math.ceil((state.trainingSession.endAt - Date.now()) / 1000));
+    document.getElementById('breath-timer').textContent = formatDuration(remaining);
+    const phase = breathPhases[breathPhase];
+    const phaseRemaining = phase.duration - breathTime;
+    document.getElementById('breath-instruction').textContent = state.trainingSession.phase0Complete ? 'PHASE COMPLETE' : phase.text;
+    document.getElementById('breath-inner').textContent = state.trainingSession.phase0Complete ? 'DONE' : phaseRemaining;
+
+    breathTime++;
+    if(breathTime>=phase.duration) {
+      breathTime = 0;
+      breathPhase = (breathPhase+1)%3;
+    }
+    if(remaining<=0) {
+      state.trainingSession.phase0Complete = true;
+      state.trainingSession.rewardEligible = true;
+      saveState();
+      if (startButton) startButton.classList.add('hidden');
+      if(btnNext) {
+        btnNext.classList.remove('hidden');
+        btnNext.textContent = 'Continue to Awareness';
+        btnNext.disabled = false;
+      }
+      stopBreathingTimer();
+    }
+  }
+  if(btnNext) {
+    btnNext.classList.add('hidden');
+    btnNext.textContent = 'Continue to Awareness';
+    btnNext.disabled = false;
+  }
+  if (startButton) {
+    startButton.classList.remove('hidden');
+    startButton.textContent = 'Training Running';
+    startButton.disabled = true;
+  }
+  update();
+  breathTimer = setInterval(update, 1000);
+}
+
+function stopBreathingTimer() {
+  if(breathTimer) { clearInterval(breathTimer); breathTimer = null; }
+}
+
+function syncTrainingUI() {
+  const hasSession = !!state.trainingSession;
+  const timerDone = hasSession && state.trainingSession.phase0Complete;
+  const nextButton = document.getElementById('btn-next');
+  const startButton = document.getElementById('training-start-button');
+  if (nextButton) {
+    if (state.currentPhase === 0) {
+      nextButton.classList.toggle('hidden', !timerDone);
+      nextButton.textContent = 'Continue to Awareness';
+      nextButton.disabled = false;
+    } else if (state.currentPhase === 1) {
+      nextButton.classList.remove('hidden');
+      nextButton.textContent = 'Continue to Intention';
+      nextButton.disabled = false;
+    } else if (state.currentPhase === 2) {
+      nextButton.classList.remove('hidden');
+      nextButton.textContent = 'Complete Training';
+      nextButton.disabled = false;
+    }
+  }
+  if (startButton) {
+    startButton.classList.toggle('hidden', !(state.currentPhase === 0 && !timerDone));
+    startButton.disabled = !!(state.trainingSession && state.trainingSession.startedAt && !timerDone);
+    startButton.textContent = timerDone ? 'Start Morning Training' : (state.trainingSession && state.trainingSession.startedAt ? 'Training Running' : 'Start Morning Training');
+  }
+  if (!timerDone && state.currentPhase === 0) {
+    resetBreathDisplay();
+  }
+}
+
+function abortTrainingSession() {
+  if (!state.trainingSession) return;
+  state.trainingSession.aborted = true;
+  state.trainingSession.rewardEligible = false;
+  state.trainingSession.phase0Complete = false;
+  state.trainingActive = false;
+  // If a mission was running, abort it as well
+  if (state.activeChallenge && state.activeChallenge.type === 'mission') {
+    try { abortMission(state.activeChallenge.missionId); } catch (e) { state.activeChallenge = null; }
+  } else {
+    state.activeChallenge = null;
+  }
+  stopBreathingTimer();
+  state.trainingSession = null;
+  state.currentPhase = 0;
+  resetBreathDisplay();
+  saveState();
+  showToast('Training ended early. No XP earned.');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item').classList.add('active');
+  syncActiveChallengeUI();
+  updateDashboard();
+}
+
+function selectEmotion(btn, emotion) {
+  document.querySelectorAll('.emotion-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selectedEmotion = emotion;
+  saveState();
+}
+
+function selectIntention(card, intention) {
+  document.querySelectorAll('.intention-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  state.selectedIntention = intention;
+  const names = {calm:'Calm Under Pressure',discipline:'Discipline',awareness:'Awareness',control:'Control Impulses',focus:'Deep Focus',patience:'Patience'};
+  document.getElementById('intention-text').textContent = names[intention];
+  document.getElementById('selected-intention-display').style.display = 'block';
+  saveState();
+}
+
+function logEmotion(emotion) {
+  if (!state.emotionLog) state.emotionLog = [];
+  state.emotionLog.push({
+    timestamp: Date.now(),
+    emotion: emotion,
+    date: new Date().toLocaleDateString()
+  });
+  if (state.emotionLog.length > 100) state.emotionLog.shift();
+  saveState();
+  renderEmotionLog();
+  showToast(`Logged: ${emotion}`);
+}
+
+function renderEmotionLog() {
+  const container = document.getElementById('emotion-log-entries');
+  if (!container) return;
+  const logs = state.emotionLog || [];
+  if (logs.length === 0) {
+    container.innerHTML = `
+      <div class="emotion-empty-state">
+        <div class="emotion-empty-title">Start Your First Check-In</div>
+        <div class="emotion-empty-grid">
+          <div class="emotion-empty-tip">Log one emotion right now to begin pattern tracking.</div>
+          <div class="emotion-empty-tip">Use quick check-ins throughout the day for clearer trends.</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  const grouped = {};
+  logs.forEach(log => {
+    if (!grouped[log.emotion]) grouped[log.emotion] = 0;
+    grouped[log.emotion]++;
+  });
+  const emotions = {calm:'🌊',stress:'⚡',anxiety:'🌪️',anger:'🔥',excited:'✨',sadness:'🌧️',focused:'🎯','calm-ready':'🛡️'};
+  const recent = logs.slice(-10).reverse();
+  container.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:12px;margin-bottom:24px">
+      ${Object.entries(grouped).map(([emotion, count]) => `
+        <div style="text-align:center;padding:16px;background:rgba(0,212,255,0.05);border-radius:8px;border:1px solid rgba(0,212,255,0.1)">
+          <div style="font-size:24px;margin-bottom:8px">${emotions[emotion] || '😌'}</div>
+          <div style="font-size:12px;font-weight:bold;text-transform:capitalize">${emotion}</div>
+          <div style="font-size:14px;color:var(--text-secondary);margin-top:4px">${count}x today</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;font-weight:bold">Recent Check-ins</div>
+    ${recent.map((log) => `
+      <div style="padding:12px;background:rgba(0,212,255,0.05);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--accent-blue);display:flex;justify-content:space-between;align-items:center">
+        <div><span style="font-size:16px;margin-right:8px">${emotions[log.emotion] || '😌'}</span><span style="text-transform:capitalize;font-weight:bold">${log.emotion}</span></div>
+        <div style="font-size:11px;color:var(--text-secondary)">${new Date(log.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+      </div>
+    `).join('')}
+  `;
+  // Fix emotion log height
+  setTimeout(fixEmotionLogHeight, 50);
+}
+
+function fixEmotionLogHeight() {
+  const container = document.getElementById('emotion-log-entries');
+  if (!container) return;
+  const screen = document.getElementById('screen-emotion-log');
+  if (!screen || !screen.classList.contains('active')) return;
+  const bottomNav = document.querySelector('.bottom-nav');
+  const bottomHeight = bottomNav ? bottomNav.offsetHeight : 80;
+  const containerTop = container.getBoundingClientRect().top;
+  const max = Math.max(150, window.innerHeight - containerTop - bottomHeight - 20);
+  container.style.maxHeight = max + 'px';
+  container.style.overflow = 'auto';
+}
+
+function adjustEmotionLogHeight() {
+  const container = document.getElementById('emotion-log-entries');
+  if (!container) return;
+  const screen = document.getElementById('screen-emotion-log');
+  if (!screen || !screen.classList.contains('active')) return;
+  const bottomNav = document.querySelector('.bottom-nav');
+  const bottomHeight = bottomNav ? bottomNav.offsetHeight : 80;
+  const screenRect = screen.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const max = Math.max(150, window.innerHeight - containerRect.top - bottomHeight - 20);
+  container.style.maxHeight = max + 'px';
+  container.style.overflow = 'auto';
+}
+
+
+
+function completeTraining() {
+  if (isMorningTrainingLocked()) {
+    stopBreathingTimer();
+    state.trainingActive = false;
+    state.trainingSession = null;
+    state.currentPhase = 0;
+    resetBreathDisplay();
+    showToast('Morning training already completed today. No extra rewards.');
+    showScreen('dashboard');
+    updateDashboard();
+    return;
+  }
+  stopBreathingTimer();
+  state.sessionsCompleted++;
+  state.vitality = Math.min(100, state.vitality+10);
+  state.activeChallenge = null;  // Clear any active mission
+  if (state.trainingSession && state.trainingSession.rewardEligible && !state.trainingSession.aborted) {
+    addXP(scaleReward(24));
+    state.morningTrainingDate = getTodayKey();
+    
+    // Auto-complete awareness-based missions since they just did awareness training
+    const awarenessKeywords = ['awareness', 'check-in', 'emotion', 'scan', 'notice'];
+    state.missions.forEach(mission => {
+      if (mission.status === 'pending' && mission.kind === 'log') {
+        const text = mission.text.toLowerCase();
+        if (awarenessKeywords.some(kw => text.includes(kw)) && !mission.note) {
+          mission.note = 'Verified during morning training - awareness phase';
+          mission.loggedAt = Date.now();
+          mission.verificationMethod = 'training-verified';
+          mission.status = 'completed';
+          mission.completedAt = Date.now();
+        }
+      }
+    });
+  } else {
+    showToast('Training completed without reward');
+  }
+  state.trainingActive = false;
+  state.trainingSession = null;
+  state.currentPhase = 0;
+  resetBreathDisplay();
+  syncProgression(true);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item').classList.add('active');
+  syncActiveChallengeUI();
+  renderMissions();
+  updateDashboard();
+}
+
+// ===== EVENING RESET =====
+function selectResponse(btn, type) {
+  document.querySelectorAll('#screen-evening .emotion-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selectedResponse = type;
+  saveState();
+}
+
+function completeEveningReset() {
+  if (state.eveningResetDate === getTodayKey()) {
+    showToast('Evening reset already completed today');
+    return;
+  }
+  const lossValue = document.getElementById('reflect-loss')?.value?.trim();
+  const calmValue = document.getElementById('reflect-calm')?.value?.trim();
+  const triggerValue = document.getElementById('reflect-trigger')?.value?.trim();
+  const responseValue = state.selectedResponse || null;
+  
+  if (!lossValue || !calmValue || !triggerValue || !responseValue) {
+    showToast('Complete all reflection questions');
+    return;
+  }
+  
+  state.eveningReflections = state.eveningReflections || [];
+  state.eveningReflections.push({
+    date: getTodayKey(),
+    loss: lossValue,
+    calm: calmValue,
+    trigger: triggerValue,
+    response: responseValue,
+    timestamp: Date.now()
+  });
+  
+  state.sessionsCompleted++;
+  state.vitality = Math.min(100, state.vitality+15);
+  state.streak++;
+  if (state.streak > state.longestStreak) {
+    state.longestStreak = state.streak;
+    recordTimelineEvent('streak', `${state.streak} Day Streak Record`, 'New personal best streak achieved');
+  }
+  addXP(scaleReward(20));
+  state.eveningResetDate = getTodayKey();
+  state.selectedResponse = null;
+  syncProgression(true);
+  showToast('+' + scaleReward(20) + ' XP - Evening reset complete');
+  
+  // Clear reflection inputs
+  document.getElementById('reflect-loss').value = '';
+  document.getElementById('reflect-calm').value = '';
+  document.getElementById('reflect-trigger').value = '';
+  document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('selected'));
+  
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item').classList.add('active');
+  updateDashboard();
+}
+
+// ===== XP & RANK SYSTEM =====
+function addXP(amount) {
+  state.xp += amount;
+  showToast('+' + amount + ' XP', 'success');
+  saveState();
+}
+
+function showRankUp(rank) {
+  document.getElementById('rank-up-name').textContent = rank.name.toUpperCase();
+  document.getElementById('rank-up-desc').textContent = rank.desc;
+  document.getElementById('rank-modal').classList.add('show');
+}
+
+function closeRankModal() {
+  document.getElementById('rank-modal').classList.remove('show');
+  saveState();
+  updateDashboard();
+}
+
+function closeRankModal() {
+  document.getElementById('rank-modal').classList.remove('show');
+  saveState();
+  updateDashboard();
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  state.xp = 0;
+  state.level = 1;
+  state.rankIndex = 0;
+  state.rank = ranks[0].name;
+  state.missionsCompleted = 0;
+  state.sessionsCompleted = 0;
+  state.vitality = 75;
+  state.streak = 0;
+  state.highestRankIndex = 0;
+  state.longestStreak = 0;
+  state.totalEmotionLogs = 0;
+  state.achievementsEarned = [];
+  state.vitalityHistory = [];
+  state.xpHistory = [];
+  state.streakHistory = [];
+  saveState();
+  syncProgression(false);
+  updateDashboard();
+  renderMissions();
+  showToast('Progress reset');
+  closeRankModal();
+}
+
+function showToast(msg, tone = 'info') {
+  const toast = document.getElementById('xp-toast');
+  const icon = toast.querySelector('.xp-toast-icon');
+  document.getElementById('xp-toast-text').textContent = msg;
+  toast.classList.remove('success', 'warning', 'info');
+
+  let resolvedTone = tone;
+  if (!tone || tone === 'info') {
+    const lower = String(msg).toLowerCase();
+    if (lower.includes('locked') || lower.includes('wait') || lower.includes('invalid') || lower.includes('not')) {
+      resolvedTone = 'warning';
+    } else if (lower.includes('complete') || lower.includes('saved') || lower.includes('exported') || lower.includes('+')) {
+      resolvedTone = 'success';
+    } else {
+      resolvedTone = 'info';
+    }
+  }
+
+  if (icon) {
+    icon.textContent = resolvedTone === 'success' ? '✓' : (resolvedTone === 'warning' ? '!' : 'i');
+  }
+  toast.classList.add(resolvedTone);
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+    toast.classList.remove('success', 'warning', 'info');
+    if (icon) icon.textContent = '✨';
+  }, 2500);
+}
+
+// ===== PROFILE =====
+function updateProfile() {
+  const rank = ranks[state.rankIndex];
+  document.getElementById('profile-rank').textContent = rank.name.toUpperCase();
+  document.getElementById('profile-level').textContent = state.level;
+  document.getElementById('profile-xp').textContent = state.xp;
+  document.getElementById('profile-streak').textContent = state.streak;
+  document.getElementById('profile-missions').textContent = state.missionsCompleted;
+  document.getElementById('profile-sessions').textContent = state.sessionsCompleted;
+
+  // Show XP remaining to next level
+  const xpBase = typeof state.xpForCurrentLevel === 'number' ? state.xpForCurrentLevel : 0;
+  const xpNeeded = typeof state.xpToNextLevel === 'number' ? state.xpToNextLevel : XP_BASE;
+  const remaining = Math.max(0, Math.round(xpNeeded - (state.xp - xpBase)));
+  const elNext = document.getElementById('profile-next-xp');
+  if (elNext) elNext.textContent = remaining;
+
+  // Update rank bars
+  document.getElementById('rank-initiate').textContent = Math.min(state.level,10)+'/10';
+  document.getElementById('bar-initiate').style.width = Math.min(100,(state.level/10)*100)+'%';
+  document.getElementById('rank-apprentice').textContent = Math.min(Math.max(0,state.level-10),15)+'/15';
+  document.getElementById('bar-apprentice').style.width = Math.min(100,(Math.max(0,state.level-10)/15)*100)+'%';
+  document.getElementById('rank-adept').textContent = Math.min(Math.max(0,state.level-25),25)+'/25';
+  document.getElementById('bar-adept').style.width = Math.min(100,(Math.max(0,state.level-25)/25)*100)+'%';
+  document.getElementById('rank-guardian').textContent = Math.min(Math.max(0,state.level-50),25)+'/25';
+  document.getElementById('bar-guardian').style.width = Math.min(100,(Math.max(0,state.level-50)/25)*100)+'%';
+  document.getElementById('rank-master').textContent = Math.min(Math.max(0,state.level-75),25)+'/25';
+  document.getElementById('bar-master').style.width = Math.min(100,(Math.max(0,state.level-75)/25)*100)+'%';
+  const architectProgress = Math.max(0, state.level - 100);
+  document.getElementById('rank-architect').textContent = architectProgress + '+/\u221e';
+  document.getElementById('bar-architect').style.width = Math.min(100, architectProgress) + '%';
+
+  // Update achievement hints
+  refreshAchievementsUI();
+}
+ 
+
+function toggleTheme() {
+  state.theme = state.theme === 'light' ? 'dark' : 'light';
+  if (state.theme === 'light') document.body.classList.add('theme-light'); else document.body.classList.remove('theme-light');
+  saveState();
+  showToast(state.theme === 'light' ? 'Light theme enabled' : 'Dark theme enabled');
+}
+
+// Apply theme on load
+if (state.theme === 'light') document.body.classList.add('theme-light');
+
+// ===== REPORTS & STATISTICS =====
+function scanPersistedMissions() {
+  const map = {}; // date -> missions array
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key) continue;
+    if (key.startsWith('tfw_missions_')) {
+      try {
+        const arr = JSON.parse(localStorage.getItem(key) || '[]');
+        const date = key.replace('tfw_missions_','');
+        map[date] = arr;
+      } catch(e) { }
+    }
+  }
+  return map;
+}
+
+function aggregateMonthlyData() {
+  const missionsByDate = scanPersistedMissions();
+  const emotions = state.emotionLog || [];
+  const mAgg = {}; // YYYY-MM -> {missionsCompleted: n, xp: n}
+  Object.entries(missionsByDate).forEach(([date, arr]) => {
+    const month = date.slice(0,7);
+    if (!mAgg[month]) mAgg[month] = {missionsCompleted:0,xp:0};
+    arr.forEach(m => { if (m.status === 'completed') { mAgg[month].missionsCompleted++; mAgg[month].xp += (m.xp||0); } });
+  });
+
+  const eAgg = {}; // YYYY-MM -> {emotion:count}
+  emotions.forEach(log => {
+    const d = new Date(log.timestamp);
+    const month = d.toISOString().slice(0,7);
+    if (!eAgg[month]) eAgg[month] = {};
+    eAgg[month][log.emotion] = (eAgg[month][log.emotion]||0)+1;
+  });
+
+  return {missions:mAgg,emotions:eAgg};
+}
+
+function openReports() {
+  const modal = document.getElementById('reports-modal');
+  modal.classList.add('show');
+  renderReports();
+}
+
+function renderReports() {
+  const container = document.getElementById('reports-content');
+  if (!container) return;
+  const months = getMonthlyData();
+  if (!months.length) { 
+    container.innerHTML = '<div style="padding:20px;color:var(--text-secondary)">No historical data available yet. Complete missions and training to generate reports.</div>'; 
+    return; 
+  }
+  const rows = months.map(m => {
+    return `<div style="padding:14px;border-bottom:1px solid rgba(255,255,255,0.03);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong style="font-size:16px">${m.month}</strong>
+        <span style="color:var(--accent-amber);font-family:'Orbitron',sans-serif">${m.xpGained} XP</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--text-secondary)">
+        <div>Levels: +${m.levelsGained}</div>
+        <div>Best Streak: ${m.longestStreak}</div>
+        <div>Avg Vitality: ${m.avgVitality}%</div>
+        <div>Top Emotion: ${m.topEmotion || '—'}</div>
+        <div>Missions: ${m.missionsCompleted}</div>
+        <div>Trainings: ${m.trainings}</div>
+        <div>Resets: ${m.resets}</div>
+      </div>
+    </div>`;
+  }).join('');
+  container.innerHTML = rows;
+}
+
+function getMonthlyData() {
+  const months = {};
+  // Aggregate from mission history
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('tfw_missions_')) {
+      try {
+        const date = key.replace('tfw_missions_','');
+        const month = date.slice(0,7);
+        const arr = JSON.parse(localStorage.getItem(key) || '[]');
+        if (!months[month]) months[month] = {month, xpGained:0, missionsCompleted:0, trainings:0, resets:0, emotions:{}};
+        arr.forEach(m => {
+          if (m.status === 'completed') {
+            months[month].missionsCompleted++;
+            months[month].xpGained += (m.xp || 0);
+          }
+        });
+      } catch(e) {}
+    }
+  }
+  // Add emotion data
+  (state.emotionLog || []).forEach(log => {
+    const d = new Date(log.timestamp);
+    const month = d.toISOString().slice(0,7);
+    if (!months[month]) months[month] = {month, xpGained:0, missionsCompleted:0, trainings:0, resets:0, emotions:{}};
+    months[month].emotions[log.emotion] = (months[month].emotions[log.emotion] || 0) + 1;
+  });
+  // Add training data
+  (state.eveningReflections || []).forEach(r => {
+    if (r.type === 'training') {
+      const month = r.date.slice(0,7);
+      if (!months[month]) months[month] = {month, xpGained:0, missionsCompleted:0, trainings:0, resets:0, emotions:{}};
+      months[month].trainings++;
+    }
+    if (r.type === 'evening' || r.date) {
+      const month = (r.date || getTodayKey()).slice(0,7);
+      if (!months[month]) months[month] = {month, xpGained:0, missionsCompleted:0, trainings:0, resets:0, emotions:{}};
+      if (r.type === 'evening') months[month].resets++;
+    }
+  });
+  // Calculate derived values
+  return Object.values(months).map(m => ({
+    ...m,
+    levelsGained: 0, // Would need level history per month
+    longestStreak: state.longestStreak,
+    avgVitality: state.vitalityHistory.length ? Math.round(state.vitalityHistory.reduce((a,b)=>a+b.value,0)/state.vitalityHistory.length) : state.vitality,
+    topEmotion: Object.entries(m.emotions).sort((a,b)=>b[1]-a[1])[0]?.[0]
+  })).sort((a,b) => b.month.localeCompare(a.month));
+}
+
+function openStats() {
+  document.getElementById('stats-modal').classList.add('show');
+  renderStats();
+}
+
+function renderStats() {
+  const container = document.getElementById('stats-content');
+  if (!container) return;
+
+  const todayKey = getTodayKey();
+  const ensureSeries = series => {
+    if (Array.isArray(series) && series.length > 1) return series;
+    const value = Array.isArray(series) && series.length ? series[0].value : 0;
+    return [{date: todayKey, value}, {date: todayKey, value}];
+  };
+  const emotionCounts = {};
+  (state.emotionLog || []).forEach(log => {
+    emotionCounts[log.emotion] = (emotionCounts[log.emotion] || 0) + 1;
+  });
+  const fallbackEmotionCounts = Object.keys(emotionCounts).length > 0 ? emotionCounts : {calm: 0, stress: 0, focus: 0, anxiety: 0};
+
+  // Statistics grid
+  const statsHtml = `<div class="stats-modal-grid">
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.xp}</div><div class="stats-modal-label">Total XP</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${ranks[state.rankIndex].name}</div><div class="stats-modal-label">Current Rank</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${ranks[state.highestRankIndex || 0].name}</div><div class="stats-modal-label">Highest Rank</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.streak}</div><div class="stats-modal-label">Current Streak</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.longestStreak}</div><div class="stats-modal-label">Longest Streak</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.sessionsCompleted}</div><div class="stats-modal-label">Total Sessions</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.totalEmotionLogs || 0}</div><div class="stats-modal-label">Emotion Logs</div></div>
+    <div class="stats-modal-item"><div class="stats-modal-value">${state.missionsCompleted}</div><div class="stats-modal-label">Missions Done</div></div>
+  </div>`;
+
+  // Charts
+  const chartsHtml = `
+    <div class="chart-container"><div class="chart-title">XP Growth</div><canvas id="xp-chart" class="chart-canvas" width="600" height="180"></canvas></div>
+    <div class="chart-container"><div class="chart-title">Vitality Over Time</div><canvas id="vitality-chart" class="chart-canvas" width="600" height="180"></canvas></div>
+    <div class="chart-container"><div class="chart-title">Streak Growth</div><canvas id="streak-chart" class="chart-canvas" width="600" height="180"></canvas></div>
+    <div class="chart-container"><div class="chart-title">Emotion Frequency</div><canvas id="emotion-chart" class="chart-canvas" width="600" height="180"></canvas></div>
+  `;
+
+  container.innerHTML = statsHtml + chartsHtml;
+
+  // Draw charts after DOM update
+  setTimeout(() => {
+    drawLineChart('xp-chart', ensureSeries(state.xpHistory), '#00d4ff');
+    drawLineChart('vitality-chart', ensureSeries(state.vitalityHistory), '#00ff88');
+    drawLineChart('streak-chart', ensureSeries(state.streakHistory), '#ffaa00');
+    drawBarChart('emotion-chart', fallbackEmotionCounts, '#9d4edd');
+  }, 50);
+}
+
+function drawLineChart(canvasId, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+
+  const w = rect.width, h = rect.height;
+  const padding = 30;
+  const chartW = w - padding * 2;
+  const chartH = h - padding * 2;
+
+  const values = data.map(d => d.value);
+  const min = Math.min(...values) * 0.9;
+  const max = Math.max(...values) * 1.1;
+  const range = max - min || 1;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+
+  data.forEach((d, i) => {
+    const x = padding + (i / (data.length - 1)) * chartW;
+    const y = padding + chartH - ((d.value - min) / range) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Draw points
+  ctx.fillStyle = color;
+  data.forEach((d, i) => {
+    const x = padding + (i / (data.length - 1)) * chartW;
+    const y = padding + chartH - ((d.value - min) / range) * chartH;
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // Draw grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padding + (i / 4) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(padding, y);
+    ctx.lineTo(w - padding, y);
+    ctx.stroke();
+  }
+}
+
+function drawBarChart(canvasId, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+
+  const w = rect.width, h = rect.height;
+  const padding = 30;
+  const chartW = w - padding * 2;
+  const chartH = h - padding * 2;
+
+  const entries = Object.entries(data);
+  const max = Math.max(...entries.map(e => e[1])) * 1.1 || 1;
+  const barW = chartW / entries.length * 0.6;
+  const gap = chartW / entries.length * 0.4;
+
+  ctx.clearRect(0, 0, w, h);
+
+  entries.forEach(([label, value], i) => {
+    const x = padding + i * (barW + gap) + gap / 2;
+    const barH = (value / max) * chartH;
+    const y = padding + chartH - barH;
+
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(x, y, barW, barH);
+    ctx.globalAlpha = 1;
+
+    // Label
+    ctx.fillStyle = 'var(--text-secondary)';
+    ctx.font = '10px Rajdhani';
+    ctx.textAlign = 'center';
+    ctx.fillText(label.charAt(0).toUpperCase() + label.slice(1), x + barW / 2, padding + chartH + 12);
+
+    // Value
+    ctx.fillStyle = color;
+    ctx.fillText(value, x + barW / 2, y - 4);
+  });
+}
+
+// ===== ACHIEVEMENTS =====
+function computeAchievements() {
+  return ACHIEVEMENTS.map(a => ({...a,earned: !!a.check(state)}));
+}
+
+function openAchievements() {
+  document.getElementById('achievements-modal').classList.add('show');
+  renderAchievements();
+}
+
+function renderAchievements() {
+  const list = computeAchievements();
+  const container = document.getElementById('achievements-content');
+  if (!container) return;
+  container.innerHTML = list.map(a => `<div class="achievement-item">
+    <div class="achievement-icon ${a.earned ? 'earned' : 'locked'}">${a.earned ? '🏆' : '🔒'}</div>
+    <div class="achievement-info">
+      <div class="achievement-name">${a.label}</div>
+      <div class="achievement-desc">${a.desc} ${a.earned ? '<span style="color:var(--success)">— Earned!</span>' : ''}</div>
+    </div>
+  </div>`).join('');
+}
+
+function refreshAchievementsUI() {
+  // placeholder - could add small badge counts in profile
+}
+
+// ===== PHILOSOPHY & TIMELINE =====
+function openPhilosophy() { showPhilosophy(); }
+
+function openTimeline() { document.getElementById('timeline-modal').classList.add('show'); renderTimeline(); }
+
+function renderTimeline() {
+  const container = document.getElementById('timeline-content');
+  if (!container) return;
+  const events = [];
+
+  // Rank ups
+  (state.eveningReflections || []).forEach(r => {
+    if (r.type === 'rank-up') {
+      events.push({t:r.timestamp, type:'rank-up', title:r.title, desc:r.desc, date:r.date});
+    }
+    if (r.type === 'streak') {
+      events.push({t:r.timestamp, type:'streak', title:r.title, desc:r.desc, date:r.date});
+    }
+  });
+
+  // Mission completions from today
+  state.missions.forEach(m => {
+    if (m.status === 'completed' && m.completedAt) {
+      events.push({t:m.completedAt, type:'mission', title:'Mission Complete', desc:m.text, date:getTodayKey()});
+    }
+  });
+
+  // Training sessions
+  if (state.morningTrainingDate) {
+    events.push({t:Date.parse(state.morningTrainingDate)||Date.now(), type:'milestone', title:'Morning Training', desc:'Completed morning training session', date:state.morningTrainingDate});
+  }
+
+  // Evening resets
+  if (state.eveningResetDate) {
+    events.push({t:Date.parse(state.eveningResetDate)||Date.now(), type:'milestone', title:'Evening Reset', desc:'Completed evening reflection', date:state.eveningResetDate});
+  }
+
+  events.sort((a,b)=>b.t - a.t);
+
+  if (!events.length) { 
+    container.innerHTML = '<div style="padding:20px;color:var(--text-secondary)">No timeline events yet. Start training to build your journey.</div>'; 
+    return; 
+  }
+
+  container.innerHTML = events.map(e => `<div class="timeline-item ${e.type}">
+    <div class="timeline-date">${new Date(e.t).toLocaleDateString()} — ${new Date(e.t).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+    <div class="timeline-title">${e.title}</div>
+    <div class="timeline-desc">${e.desc}</div>
+  </div>`).join('');
+}
+// ===== INIT =====
+// Ensure `init` runs once across different load scenarios (DOMContentLoaded or window.onload).
+if (!window._tfw_init_once) window._tfw_init_once = false;
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window._tfw_init_once) { window._tfw_init_once = true; init(); }
+});
+window.onload = () => { if (!window._tfw_init_once) { window._tfw_init_once = true; init(); } };
+</script>
+</body>
+</html>
